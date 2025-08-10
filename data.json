@@ -1,0 +1,192 @@
+{
+    "updateDate": "2023年12月15日",
+    "semesters": [
+      {
+        "name": "2023-2024 第一学期",
+        "stats": {
+          "average": 87.4,
+          "change": 2.2,
+          "highest": {
+            "score": 96,
+            "subject": "数学"
+          },
+          "lowest": {
+            "score": 78,
+            "subject": "物理"
+          },
+          "rank": "8/45",
+          "rankPercent": "前 17.8%"
+        },
+        "subjects": [
+          {
+            "name": "语文",
+            "score": 85,
+            "classAvg": 82.3,
+            "rank": "15/45"
+          },
+          {
+            "name": "数学",
+            "score": 96,
+            "classAvg": 88.7,
+            "rank": "2/45"
+          },
+          {
+            "name": "英语",
+            "score": 89,
+            "classAvg": 85.2,
+            "rank": "10/45"
+          },
+          {
+            "name": "物理",
+            "score": 78,
+            "classAvg": 75.4,
+            "rank": "20/45"
+          },
+          {
+            "name": "化学",
+            "score": 86,
+            "classAvg": 80.1,
+            "rank": "12/45"
+          },
+          {
+            "name": "生物",
+            "score": 88,
+            "classAvg": 83.6,
+            "rank": "9/45"
+          },
+          {
+            "name": "历史",
+            "score": 92,
+            "classAvg": 86.3,
+            "rank": "5/45"
+          }
+        ]
+      },
+      {
+        "name": "2022-2023 第二学期",
+        "stats": {
+          "average": 85.2,
+          "change": 1.5,
+          "highest": {
+            "score": 90,
+            "subject": "数学"
+          },
+          "lowest": {
+            "score": 79,
+            "subject": "物理"
+          },
+          "rank": "10/45",
+          "rankPercent": "前 22.2%"
+        },
+        "subjects": [
+          {
+            "name": "语文",
+            "score": 83,
+            "classAvg": 81.5,
+            "rank": "18/45"
+          },
+          {
+            "name": "数学",
+            "score": 90,
+            "classAvg": 86.2,
+            "rank": "5/45"
+          },
+          {
+            "name": "英语",
+            "score": 87,
+            "classAvg": 84.0,
+            "rank": "12/45"
+          },
+          {
+            "name": "物理",
+            "score": 79,
+            "classAvg": 76.1,
+            "rank": "22/45"
+          },
+          {
+            "name": "化学",
+            "score": 84,
+            "classAvg": 79.3,
+            "rank": "14/45"
+          },
+          {
+            "name": "生物",
+            "score": 85,
+            "classAvg": 82.1,
+            "rank": "11/45"
+          },
+          {
+            "name": "历史",
+            "score": 89,
+            "classAvg": 85.0,
+            "rank": "8/45"
+          }
+        ]
+      },
+      {
+        "name": "2022-2023 第一学期",
+        "stats": {
+          "average": 83.7,
+          "change": 0.8,
+          "highest": {
+            "score": 92,
+            "subject": "历史"
+          },
+          "lowest": {
+            "score": 75,
+            "subject": "物理"
+          },
+          "rank": "12/45",
+          "rankPercent": "前 26.7%"
+        },
+        "subjects": [
+          {
+            "name": "语文",
+            "score": 82,
+            "classAvg": 80.1,
+            "rank": "16/45"
+          },
+          {
+            "name": "数学",
+            "score": 88,
+            "classAvg": 85.3,
+            "rank": "8/45"
+          },
+          {
+            "name": "英语",
+            "score": 85,
+            "classAvg": 83.2,
+            "rank": "13/45"
+          },
+          {
+            "name": "物理",
+            "score": 75,
+            "classAvg": 74.2,
+            "rank": "25/45"
+          },
+          {
+            "name": "化学",
+            "score": 82,
+            "classAvg": 78.5,
+            "rank": "15/45"
+          },
+          {
+            "name": "生物",
+            "score": 84,
+            "classAvg": 81.3,
+            "rank": "11/45"
+          },
+          {
+            "name": "历史",
+            "score": 92,
+            "classAvg": 85.7,
+            "rank": "5/45"
+          }
+        ]
+      }
+    ],
+    "trendData": {
+      "semesterLabels": ["2020-2021第二", "2021-2022第一", "2021-2022第二", "2022-2023第一", "2022-2023第二", "2023-2024第一"],
+      "averageScores": [79.8, 80.5, 82.9, 83.7, 85.2, 87.4]
+    }
+  }
