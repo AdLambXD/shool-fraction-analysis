@@ -4,488 +4,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>学生成绩可视化系统</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        :root {
-            --primary: #4361ee;
-            --secondary: #3f37c9;
-            --accent: #4895ef;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --success: #4cc9f0;
-            --danger: #f72585;
-            --warning: #f8961e;
-            --gray: #6c757d;
-            --border: #dee2e6;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
-            min-height: 100vh;
-            padding: 15px;
-            color: var(--dark);
-        }
-        
-        .container {
-            max-width: 100%;
-            margin: 0 auto;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        header::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--accent), var(--success));
-        }
-        
-        h1 {
-            color: var(--primary);
-            font-size: 1.8rem;
-            margin-bottom: 8px;
-        }
-        
-        .subtitle {
-            color: var(--gray);
-            font-size: 0.9rem;
-            max-width: 100%;
-            margin: 0 auto;
-            line-height: 1.5;
-        }
-        
-        .semester-selector {
-            width: 100%;
-            padding: 12px 15px;
-            background: white;
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            color: var(--dark);
-            font-size: 1rem;
-            margin-bottom: 15px;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%234361ee' viewBox='0 0 16 16'%3E%3Cpath d='M8 11.5a.5.5 0 0 1-.354-.854l3.792-3.792a.5.5 0 0 1 .708.708l-4.146 4.146a.5.5 0 0 1-.708 0L4.854 7.354a.5.5 0 1 1 .708-.708L8 10.293l3.146-3.147a.5.5 0 1 1 .708.708l-4 4A.5.5 0 0 1 8 11.5z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 15px center;
-            background-size: 16px;
-        }
-        
-        .mobile-nav {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-        
-        .mobile-nav-btn {
-            flex: 1;
-            padding: 12px 10px;
-            background: #eef2ff;
-            border: none;
-            border-radius: 10px;
-            color: var(--primary);
-            font-size: 0.9rem;
-            font-weight: 600;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .mobile-nav-btn.active {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .mobile-nav-btn i {
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-        }
-        
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        
-        .stat-card {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 3px 5px rgba(0,0,0,0.1);
-        }
-        
-        .stat-card.secondary {
-            background: linear-gradient(135deg, var(--accent) 0%, #3a86ff 100%);
-        }
-        
-        .stat-card.warning {
-            background: linear-gradient(135deg, var(--warning) 0%, #f3722c 100%);
-        }
-        
-        .stat-card.success {
-            background: linear-gradient(135deg, var(--success) 0%, #38b6ff 100%);
-        }
-        
-        .stat-card .value {
-            font-size: 1.6rem;
-            font-weight: bold;
-            margin: 8px 0;
-        }
-        
-        .stat-card .label {
-            font-size: 0.8rem;
-            opacity: 0.9;
-        }
-        
-        .section {
-            background: white;
-            border-radius: 12px;
-            padding: 20px 15px;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-        }
-        
-        .section-title {
-            color: var(--secondary);
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--border);
-            display: flex;
-            align-items: center;
-            font-size: 1.25rem;
-        }
-        
-        .section-title i {
-            margin-right: 10px;
-            color: var(--accent);
-        }
-        
-        .table-wrapper {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            margin: 15px -15px;
-        }
-        
-        table {
-            width: 100%;
-            min-width: 600px;
-            border-collapse: collapse;
-        }
-        
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.9rem;
-        }
-        
-        th {
-            background-color: #f8f9fc;
-            color: var(--secondary);
-            font-weight: 600;
-        }
-        
-        .subject-name {
-            font-weight: 600;
-            color: var(--dark);
-        }
-        
-        .score-cell {
-            text-align: center;
-            font-weight: bold;
-        }
-        
-        .score-excellent {
-            color: #2ecc71;
-        }
-        
-        .score-good {
-            color: #3498db;
-        }
-        
-        .score-average {
-            color: #f39c12;
-        }
-        
-        .score-poor {
-            color: #e74c3c;
-        }
-        
-        .chart-container {
-            border-radius: 12px;
-            padding: 20px 0;
-            margin-bottom: 20px;
-        }
-        
-        .chart-title-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding: 0 15px;
-        }
-        
-        .chart-title {
-            font-size: 1rem;
-            color: var(--secondary);
-            font-weight: 600;
-        }
-        
-        .chart-actions {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .chart-action-btn {
-            background: #eef2ff;
-            border: none;
-            border-radius: 20px;
-            padding: 6px 10px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .chart-action-btn i {
-            font-size: 0.9rem;
-        }
-        
-        .chart-wrapper {
-            background: white;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
-            height: 260px;
-            margin: 0 15px 15px;
-        }
-        
-        .term-selector {
-            display: flex;
-            justify-content: flex-start;
-            margin-bottom: 15px;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            padding: 0 15px 8px;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-        }
-        
-        .term-selector::-webkit-scrollbar {
-            display: none;
-        }
-        
-        .term-btn {
-            padding: 8px 16px;
-            background: #eef2ff;
-            border: none;
-            border-radius: 30px;
-            color: var(--primary);
-            font-weight: 500;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            margin-right: 8px;
-        }
-        
-        .term-btn.active, .term-btn:hover {
-            background: var(--primary);
-            color: white;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 20px 15px;
-            color: var(--gray);
-            font-size: 0.85rem;
-            margin-top: 10px;
-        }
-        
-        .tab-buttons {
-            display: flex;
-            margin-bottom: 15px;
-        }
-        
-        .tab-btn {
-            flex: 1;
-            padding: 12px 5px;
-            background: #eef2ff;
-            border: none;
-            border-radius: 10px;
-            color: var(--primary);
-            font-size: 0.9rem;
-            font-weight: 500;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .tab-btn.active {
-            background: var(--primary);
-            color: white;
-            font-weight: 600;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 30px;
-            color: var(--gray);
-        }
-        
-        .loading i {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            color: var(--primary);
-            animation: spin 1.5s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        @media (min-width: 768px) {
-            body {
-                padding: 25px;
-            }
-            
-            .container {
-                max-width: 750px;
-            }
-            
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            .subtitle {
-                font-size: 1.1rem;
-            }
-            
-            .stats-container {
-                grid-template-columns: repeat(4, 1fr);
-            }
-            
-            .chart-wrapper {
-                height: 300px;
-            }
-            
-            .term-selector {
-                flex-wrap: wrap;
-                justify-content: center;
-                overflow-x: visible;
-            }
-            
-            .term-btn {
-                margin: 0 5px 5px;
-            }
-        }
-        
-        @media (min-width: 1024px) {
-            .container {
-                max-width: 1000px;
-            }
-            
-            .mobile-nav {
-                display: none;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/charts.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1><i class="fas fa-graduation-cap"></i> 学生成绩可视化系统</h1>
-            <p class="subtitle">查看各学期期末成绩，分析学习趋势，发现学科优势与不足</p>
+        <!-- 应用头部 -->
+        <header class="app-header">
+            <h1 class="app-title">
+                <i class="fas fa-graduation-cap"></i>
+                学生成绩可视化系统
+            </h1>
+            <p class="app-subtitle">请选择考试、班级和学生查看成绩数据</p>
         </header>
         
-        <div class="mobile-nav">
-            <button class="mobile-nav-btn active">
-                <i class="fas fa-home"></i>
-                <span>概览</span>
-            </button>
-            <button class="mobile-nav-btn">
-                <i class="fas fa-chart-line"></i>
-                <span>分析</span>
-            </button>
-            <button class="mobile-nav-btn">
-                <i class="fas fa-history"></i>
-                <span>历史</span>
-            </button>
-            <button class="mobile-nav-btn">
-                <i class="fas fa-cog"></i>
-                <span>设置</span>
-            </button>
-        </div>
-        
-        <div class="section">
-            <h2 class="section-title"><i class="fas fa-gauge"></i> 成绩概览</h2>
+        <!-- 选择器组 -->
+        <div class="selector-group">
+            <div class="selector-container">
+                <div class="selector-label">考试选择</div>
+                <select id="examSelect" class="selector">
+                    <option value="">请选择考试</option>
+                </select>
+                <div class="selector-icon">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
             
-            <select id="semesterSelector" class="semester-selector">
-                <option value="loading">加载数据中...</option>
-            </select>
+            <div class="selector-container">
+                <div class="selector-label">班级选择</div>
+                <select id="classSelect" class="selector" disabled>
+                    <option value="">请先选择考试</option>
+                </select>
+                <div class="selector-icon">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
             
-            <div class="stats-container">
-                <div class="stat-card">
-                    <div class="label">平均分</div>
-                    <div id="avgScore" class="value">--</div>
-                    <div id="scoreChange"><i class="fas fa-arrow-up"></i> --%</div>
-                </div>
-                <div class="stat-card secondary">
-                    <div class="label">最高分</div>
-                    <div id="highestScore" class="value">--</div>
-                    <div id="highestSubject">--</div>
-                </div>
-                <div class="stat-card warning">
-                    <div class="label">最低分</div>
-                    <div id="lowestScore" class="value">--</div>
-                    <div id="lowestSubject">--</div>
-                </div>
-                <div class="stat-card success">
-                    <div class="label">班级排名</div>
-                    <div id="classRank" class="value">--</div>
-                    <div id="rankPercent">--</div>
+            <div class="selector-container">
+                <div class="selector-label">学生选择</div>
+                <select id="studentSelect" class="selector" disabled>
+                    <option value="">请先选择班级</option>
+                </select>
+                <div class="selector-icon">
+                    <i class="fas fa-chevron-down"></i>
                 </div>
             </div>
         </div>
         
-        <div class="section">
-            <div class="tab-buttons">
-                <button class="tab-btn active">成绩详情</button>
-                <button class="tab-btn">数据分析</button>
-                <button class="tab-btn">对比视图</button>
+        <!-- 数据提示 -->
+        <div class="data-hint" id="dataHint">
+            <i class="fas fa-mouse-pointer"></i>
+            <p>请选择考试、班级和学生查看成绩数据</p>
+        </div>
+        
+        <!-- 统计卡片 -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card primary">
+                <div class="stat-label">
+                    <i class="fas fa-calculator"></i>
+                    平均分
+                </div>
+                <div class="stat-value" id="avgScore">--</div>
+                <div class="stat-change" id="scoreChange">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>--%</span>
+                </div>
             </div>
             
-            <h2 class="section-title"><i class="fas fa-table"></i> 成绩详情</h2>
+            <div class="stat-card secondary">
+                <极简 class="stat-label">
+                    <i class="fas fa-crown"></i>
+                    最高分
+                </div>
+                <div class="stat-value" id="highestScore">--</div>
+                <div class="stat-subtext" id="highestSubject">--</div>
+            </div>
             
-            <div class="table-wrapper">
-                <table id="scoreTable">
+            <div class="stat-card warning">
+                <div class="stat-label">
+                    <i class="fas fa-arrow-down"></i>
+                    最低分
+                </div>
+                <div class="stat-value" id="lowestScore">--</div>
+                <div class="stat-subtext" id="lowestSubject">--</div>
+            </div>
+            
+            <div class="stat-card success">
+                <div class="stat-label">
+                    <i class="fas fa-trophy"></i>
+                    班级排名
+                </div>
+                <div class="stat-value" id="classRank">--</div>
+                <div class="stat-subtext" id="rankPercent">--</div>
+            </div>
+        </div>
+        
+        <!-- 成绩表格 -->
+        <section class="score-section" id="scoreSection">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-table"></i>
+                    科目成绩详情
+                </h2>
+                <div class="section-actions">
+                    <button class="action-btn">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button class="action-btn">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table class="score-table">
                     <thead>
                         <tr>
                             <th>科目</th>
@@ -497,368 +131,94 @@
                     </thead>
                     <tbody id="scoreTableBody">
                         <tr>
-                            <td colspan="5" class="loading">
-                                <i class="fas fa-spinner"></i>
-                                <p>加载成绩数据中...</p>
+                            <td colspan="5" class="loading-container">
+                                <div class="loading-spinner"></div>
+                                <p class="loading-text">加载成绩数据中...</p>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-        </div>
+        </section>
         
-        <div class="chart-container">
-            <div class="chart-title-bar">
-                <h2 class="chart-title"><i class="fas fa-chart-line"></i> 成绩趋势分析</h2>
-                <div class="chart-actions">
-                    <button class="chart-action-btn"><i class="fas fa-download"></i></button>
-                    <button class="chart-action-btn"><i class="fas fa-sync-alt"></i></button>
+        <!-- 趋势图表 -->
+        <section class="chart-section" id="chartSection">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-line"></i>
+                    成绩趋势分析
+                </h2>
+                <div class="section-actions">
+                    <button class="action-btn">
+                        <i class="fas fa-download"></极简>
+                    </button>
+                    <button class="action-btn" id="refreshCharts">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
                 </div>
             </div>
             
-            <div class="term-selector">
-                <button class="term-btn active">全部科目</button>
-                <button class="term-btn">主科</button>
-                <button class="term-btn">理科</button>
-                <button class="term-btn">文科</button>
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">学期平均分趋势</h3>
+                </div>
+                
+                <div class="chart-filter">
+                    <button class="filter-btn active">全部科目</button>
+                    <button class="filter-btn">主科</button>
+                    <button class="filter-btn">理科</button>
+                    <button class="filter-btn">文科</button>
+                </div>
+                
+                <div class="chart-wrapper">
+                    <canvas id="trendChart"></canvas>
+                </div>
             </div>
-            
-            <div class="chart-wrapper">
-                <div class="chart-title">各学期平均分趋势</div>
-                <canvas id="trendChart"></canvas>
-            </div>
-            
-            <div class="chart-wrapper">
-                <div class="chart-title">科目成绩对比</div>
-                <canvas id="subjectChart"></canvas>
-            </div>
-            
-            <div class="chart-wrapper">
-                <div class="chart-title">学科分布雷达图</div>
-                <canvas id="radarChart"></canvas>
-            </div>
-            
-            <div class="chart-wrapper">
-                <div class="chart-title">成绩等级分布</div>
-                <canvas id="gradeChart"></canvas>
-            </div>
-        </div>
+        </section>
         
-        <footer>
-            <p>© 2025 AdLamb 使用Apache协议开源 | 数据更新时间: <span id="updateDate">2025年</span></p>
-        </footer>
+        <!-- 科目对比图表 -->
+        <section class="chart-section" id="subjectChartSection">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-bar"></i>
+                    科目成绩对比
+                </h2>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">当前学期科目对比</h3>
+                </div>
+                
+                <div class="chart-wrapper">
+                    <canvas id="subjectChart"></canvas>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 底部导航 -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item active">
+                <i class="fas fa-home nav-icon"></i>
+                <span>首页</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-chart-line nav-icon"></i>
+                <span>分析</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-history nav-icon"></i>
+                <span>历史</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-user nav-icon"></i>
+                <span>我的</span>
+            </a>
+        </nav>
     </div>
     
-    <script>
-        // 图表实例
-        let trendChart, subjectChart, radarChart, gradeChart;
-        
-        // 从JSON文件加载数据
-        async function loadData() {
-            try {
-                // 模拟从服务器加载JSON数据
-                const response = await fetch('data.json');
-                if (!response.ok) {
-                    throw new Error('网络响应不正常');
-                }
-                return await response.json();
-            } catch (error) {
-                console.error('加载数据失败:', error);
-                return null;
-            }
-        }
-        
-        // 初始化应用
-        async function initApp() {
-            const data = await loadData();
-            
-            if (!data) {
-                document.getElementById('semesterSelector').innerHTML = '<option>数据加载失败</option>';
-                return;
-            }
-            
-            // 更新数据更新时间
-            document.getElementById('updateDate').textContent = data.updateDate;
-            
-            // 填充学期选择器
-            const semesterSelector = document.getElementById('semesterSelector');
-            semesterSelector.innerHTML = '';
-            data.semesters.forEach(semester => {
-                const option = document.createElement('option');
-                option.value = semester.name;
-                option.textContent = semester.name;
-                semesterSelector.appendChild(option);
-            });
-            
-            // 默认选择第一个学期
-            semesterSelector.value = data.semesters[0].name;
-            updateSemesterData(data.semesters[0]);
-            
-            // 初始化图表
-            initCharts(data);
-            
-            // 添加学期切换事件
-            semesterSelector.addEventListener('change', function() {
-                const selectedSemester = data.semesters.find(s => s.name === this.value);
-                if (selectedSemester) {
-                    updateSemesterData(selectedSemester);
-                }
-            });
-        }
-        
-        // 更新学期数据
-        function updateSemesterData(semester) {
-            // 更新统计卡片
-            document.getElementById('avgScore').textContent = semester.stats.average.toFixed(1);
-            document.getElementById('scoreChange').innerHTML = `<i class="fas fa-arrow-up"></i> ${semester.stats.change}%`;
-            document.getElementById('highestScore').textContent = semester.stats.highest.score;
-            document.getElementById('highestSubject').textContent = semester.stats.highest.subject;
-            document.getElementById('lowestScore').textContent = semester.stats.lowest.score;
-            document.getElementById('lowestSubject').textContent = semester.stats.lowest.subject;
-            document.getElementById('classRank').textContent = semester.stats.rank;
-            document.getElementById('rankPercent').textContent = semester.stats.rankPercent;
-            
-            // 更新表格
-            const tableBody = document.getElementById('scoreTableBody');
-            tableBody.innerHTML = '';
-            
-            semester.subjects.forEach(subject => {
-                const row = document.createElement('tr');
-                
-                // 确定成绩等级
-                let gradeClass = 'score-average';
-                if (subject.score >= 90) gradeClass = 'score-excellent';
-                else if (subject.score >= 80) gradeClass = 'score-good';
-                else if (subject.score >= 70) gradeClass = 'score-average';
-                else gradeClass = 'score-poor';
-                
-                row.innerHTML = `
-                    <td class="subject-name">${subject.name}</td>
-                    <td class="score-cell ${gradeClass}">${subject.score}</td>
-                    <td>${subject.score >= 90 ? '优秀' : subject.score >= 80 ? '良好' : subject.score >= 70 ? '中等' : '及格'}</td>
-                    <td>${subject.classAvg.toFixed(1)}</td>
-                    <td>${subject.rank}</td>
-                `;
-                
-                tableBody.appendChild(row);
-            });
-        }
-        
-        // 初始化图表
-        function initCharts(data) {
-            // 趋势图表
-            const trendCtx = document.getElementById('trendChart').getContext('2d');
-            trendChart = new Chart(trendCtx, {
-                type: 'line',
-                data: {
-                    labels: data.trendData.semesterLabels,
-                    datasets: [{
-                        label: '平均分',
-                        data: data.trendData.averageScores,
-                        borderColor: '#4361ee',
-                        backgroundColor: 'rgba(67, 97, 238, 0.1)',
-                        borderWidth: 3,
-                        pointBackgroundColor: '#fff',
-                        pointBorderColor: '#4361ee',
-                        pointBorderWidth: 2,
-                        pointRadius: 4,
-                        pointHoverRadius: 6,
-                        fill: true,
-                        tension: 0.3
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                            padding: 10,
-                            titleFont: { size: 12 },
-                            bodyFont: { size: 12 }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: false,
-                            min: 75,
-                            max: 90,
-                            grid: { color: 'rgba(0, 0, 0, 0.05)' },
-                            ticks: {
-                                callback: function(value) {
-                                    return value + '分';
-                                }
-                            }
-                        },
-                        x: {
-                            grid: { display: false },
-                            ticks: { maxRotation: 0, autoSkip: true }
-                        }
-                    }
-                }
-            });
-            
-            // 科目对比图表
-            const subjectCtx = document.getElementById('subjectChart').getContext('2d');
-            subjectChart = new Chart(subjectCtx, {
-                type: 'bar',
-                data: {
-                    labels: data.semesters[0].subjects.map(s => s.name),
-                    datasets: [{
-                        label: '我的成绩',
-                        data: data.semesters[0].subjects.map(s => s.score),
-                        backgroundColor: '#4895ef',
-                        borderColor: '#3f37c9',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                            padding: 10
-                        }
-                },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            grid: { color: 'rgba(0, 0, 0, 0.05)' },
-                            ticks: {
-                                callback: function(value) {
-                                    return value + '分';
-                                }
-                            }
-                        },
-                        x: {
-                            grid: { display: false }
-                        }
-                    }
-                }
-            });
-            
-            // 雷达图
-            const radarCtx = document.getElementById('radarChart').getContext('2d');
-            radarChart = new Chart(radarCtx, {
-                type: 'radar',
-                data: {
-                    labels: data.semesters[0].subjects.map(s => s.name),
-                    datasets: [{
-                        label: '我的成绩',
-                        data: data.semesters[0].subjects.map(s => s.score),
-                        backgroundColor: 'rgba(67, 97, 238, 0.2)',
-                        borderColor: '#4361ee',
-                        borderWidth: 2,
-                        pointBackgroundColor: '#4361ee',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: '#4361ee'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        r: {
-                            angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
-                            grid: { color: 'rgba(0, 0, 0, 0.05)' },
-                            pointLabels: { font: { size: 10 } },
-                            min: 60,
-                            max: 100,
-                            ticks: { display: false, stepSize: 10 }
-                        }
-                    },
-                    plugins: {
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                            padding: 8
-                        },
-                        legend: { display: false }
-                    }
-                }
-            });
-            
-            // 等级分布图
-            const gradeCtx = document.getElementById('gradeChart').getContext('2d');
-            gradeChart = new Chart(gradeCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['优秀 (90+)', '良好 (80-89)', '中等 (70-79)'],
-                    datasets: [{
-                        data: [2, 4, 1],
-                        backgroundColor: ['#2ecc71', '#3498db', '#f39c12'],
-                        borderWidth: 0,
-                        hoverOffset: 8
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'right',
-                            labels: {
-                                boxWidth: 12,
-                                padding: 10,
-                                font: { size: 11 }
-                            }
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                            padding: 8,
-                            callbacks: {
-                                label: function(context) {
-                                    return `${context.label}: ${context.parsed} 门科目`;
-                                }
-                            }
-                        }
-                    },
-                    cutout: '55%'
-                }
-            });
-        }
-        
-        // 启动应用
-        document.addEventListener('DOMContentLoaded', initApp);
-        
-        // 交互功能
-        document.querySelectorAll('.term-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.term-btn').forEach(el => {
-                    el.classList.remove('active');
-                });
-                this.classList.add('active');
-            });
-        });
-        
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.tab-btn').forEach(el => {
-                    el.classList.remove('active');
-                });
-                this.classList.add('active');
-            });
-        });
-        
-        document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.mobile-nav-btn').forEach(el => {
-                    el.classList.remove('active');
-                });
-                this.classList.add('active');
-            });
-        });
-        
-        document.querySelector('.fa-sync-alt').closest('.chart-action-btn').addEventListener('click', function() {
-            trendChart.update();
-            subjectChart.update();
-            radarChart.update();
-            gradeChart.update();
-        });
-    </script>
+    <script src="scripts/data.js"></script>
+    <script src="scripts/charts.js"></script>
+    <script src="scripts/main.js"></script>
 </body>
 </html>
