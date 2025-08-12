@@ -232,7 +232,7 @@ body {
 
 .stat-subtext {
     font-size: 0.85rem;
-    color: var(--极速);
+    color: var(--gray);
 }
 
 .stat-change {
@@ -251,11 +251,15 @@ body {
 /* 成绩表格 */
 .score-section {
     background: white;
-    border-radius: 16极速;
+    border-radius: 16px;
     box-shadow: var(--card-shadow);
     margin-bottom: 20px;
     overflow: hidden;
     display: none;
+    -webkit-border-radius: 16px;
+    -moz-border-radius: 16px;
+    -ms-border-radius: 16px;
+    -o-border-radius: 16px;
 }
 
 .section-header {

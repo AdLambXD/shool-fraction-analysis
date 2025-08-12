@@ -2,7 +2,7 @@
 const cloudDataSources = {
     github: {
         name: "Github源",
-        indexUrl: "https://raw.githubusercontent.com/your-username/your-repo/main/exams-index.json"
+        indexUrl: "https://github.com/AdLambXD/shool-fraction-analysis/blob/main/data/index.json"
     },
     gitee: {
         name: "Gitee源",
