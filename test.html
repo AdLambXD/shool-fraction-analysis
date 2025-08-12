@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生成绩可视化系统</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #eef2ff;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --danger: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --border: #dee2e6;
+            --card-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            min-height: 100vh;
+            padding: 16px;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        /* 头部样式 */
+        .app-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 20px 15px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .app-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--success));
+        }
+        
+        .app-title {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .app-subtitle {
+            color: var(--gray);
+            font-size: 0.95rem;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+        
+        /* 选择器样式 */
+        .selector-group {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        @media (min-width: 768px) {
+            .selector-group {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        .selector-container {
+            position: relative;
+        }
+        
+        .selector-label {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-bottom: 6px;
+            padding-left: 8px;
+        }
+        
+        .selector {
+            width: 100%;
+            padding: 14px 50px 14px 16极简;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            color: var(--dark);
+            font-size: 1rem;
+            font-weight: 500;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        
+        .selector:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .selector-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            pointer-events: none;
+        }
+        
+        /* 统计卡片 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        @media (min-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 14px;
+            padding: 18px 15px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+        
+        .stat-card.primary::before {
+            background: var(--primary);
+        }
+        
+        .stat-card.secondary::before {
+            background: var(--accent);
+        }
+        
+        .stat-card.warning::before {
+            background: var(--warning);
+        }
+        
+        .stat-card.success::before {
+            background: var(--success);
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 4px;
+        }
+        
+        .stat-subtext {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+        
+        .stat-change {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #2ecc71;
+        }
+        
+        .stat-change.down {
+            color: var(--danger);
+        }
+        
+        /* 成绩表格 */
+        .score-section {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 20px;
+            overflow: hidden;
+            display: none;
+        }
+        
+        .section-header {
+            padding: 18px 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .section-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: var(--primary);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .action-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .score-table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: collapse;
+        }
+        
+        .score-table th {
+            padding: 14px 16px;
+            text-align: left;
+            background-color: #f8f9fc;
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .score-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+        
+        .subject-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .score-cell {
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        .score-excellent {
+            color: #2ecc71;
+        }
+        
+        .score-good {
+            color: #3498db;
+        }
+        
+        .score-average {
+            color: #f39c12;
+        }
+        
+        .score-poor {
+            color: #e74c3c;
+        }
+        
+        /* 图表部分 */
+        .chart-section {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 20px;
+            overflow: hidden;
+            display: none;
+        }
+        
+        .chart-container {
+            padding: 20px 16px;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .chart-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        /* 修复图表容器布局 */
+        .chart-wrapper {
+            height: 280px;
+            position: relative;
+            width: 100%;
+        }
+        
+        .chart-filter {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 0 0 10px;
+            margin-bottom: 15px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        
+        .chart-filter::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .filter-btn {
+            padding: 8px 16px;
+            background: var(--primary-light);
+            border: none;
+            border-radius: 20px;
+            color: var(--primary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* 底部导航 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 100;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            color: var(--gray);
+            font-size: 0.8rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-item.active {
+            color: var(--primary);
+        }
+        
+        .nav-icon {
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+        }
+        
+        /* 加载状态 */
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--primary-light);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        .loading-text {
+            font-size: 1.1rem;
+            color: var(--gray);
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 数据提示 */
+        .data-hint {
+            text-align: center;
+            padding: 30px;
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+        
+        .data-hint i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        /* 响应式设计 */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 750px;
+            }
+            
+            .app-title {
+                font-size: 2rem;
+            }
+            
+            .app-subtitle {
+                font-size: 1.05rem;
+            }
+            
+            .chart-wrapper {
+                height: 320px;
+            }
+        }
+        
+        @media (min-width: 992px) {
+            .container {
+                max-width: 900px;
+            }
+            
+            .bottom-nav {
+                display: none;
+            }
+            
+            /* 大屏幕图表布局优化 */
+            .chart-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            
+            .chart-section {
+                margin-bottom: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 应用头部 -->
+        <header class="app-header">
+            <h1 class="app-title">
+                <i class="fas fa-graduation-cap"></i>
+                学生成绩可视化系统
+            </h1>
+            <p class="app-subtitle">请选择考试、班级和学生查看成绩数据</p>
+        </header>
+        
+        <!-- 选择器组 -->
+        <div class="selector-group">
+            <div class="selector-container">
+                <div class="selector-label">考试选择</div>
+                <select id="examSelect" class="selector">
+                    <option value="">请选择考试</option>
+                </select>
+                <div class="selector-icon">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+            
+            <div class="selector-container">
+                <div class="selector-label">班级选择</div>
+                <select id="classSelect" class="selector" disabled>
+                    <option value="">请先选择考试</option>
+                </select>
+                <div class="selector-icon">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+            
+            <div class="selector-container">
+                <div class="selector-label">学生选择</div>
+                <select id="studentSelect" class="selector" disabled>
+                    <option value="">请先选择班级</option>
+                </select>
+                <div class="selector-icon">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 数据提示 -->
+        <div class="data-hint" id="dataHint">
+            <i class="fas fa-mouse-pointer"></i>
+            <p>请选择考试、班级和学生查看成绩数据</p>
+        </div>
+        
+        <!-- 统计卡片 -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card primary">
+                <div class="stat-label">
+                    <i class="fas fa-calculator"></i>
+                    平均分
+                </div>
+                <div class="stat-value" id="avgScore">--</div>
+                <div class="stat-change" id="scoreChange">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>--%</span>
+                </div>
+            </div>
+            
+            <div class="stat-card secondary">
+                <div class="stat-label">
+                    <i class="fas fa-crown"></i>
+                    最高分
+                </div>
+                <div class="stat-value" id="highestScore">--</div>
+                <div class="stat-subtext" id="highestSubject">--</div>
+            </div>
+            
+            <div class="stat-card warning">
+                <div class="stat-label">
+                    <i class="fas fa-arrow-down"></i>
+                    最低分
+                </div>
+                <div class="stat-value" id="lowestScore">--</div>
+                <div class="stat-subtext极简" id="lowestSubject">--</div>
+            </div>
+            
+            <div class="stat-card success">
+                <div class="stat-label">
+                    <i class="fas fa-trophy"></i>
+                    班级排名
+                </div>
+                <div class="stat-value" id="classRank">--</div>
+                <div class="stat-subtext" id="rankPercent">--</div>
+            </div>
+        </div>
+        
+        <!-- 成绩表格 -->
+        <section class="score-section" id="scoreSection">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-table"></i>
+                    科目成绩详情
+                </h2>
+                <div class="section-actions">
+                    <button class="action-btn">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button class="action-btn">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table class="score-table">
+                    <thead>
+                        <tr>
+                            <th>科目</th>
+                            <th>成绩</th>
+                            <th>等级</th>
+                            <th>班级平均</th>
+                            <th>排名</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scoreTableBody">
+                        <tr>
+                            <td colspan="5" class="loading-container">
+                                <div class="loading-spinner"></div>
+                                <p class="loading-text">加载成绩数据中...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- 图表容器网格 -->
+        <div class="chart-grid">
+            <!-- 趋势图表 -->
+            <section class="chart-section" id="chartSection">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-chart-line"></i>
+                        成绩趋势分析
+                    </h2>
+                    <div class="section-actions">
+                        <button class="action-btn">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button class="action-btn" id="refreshCharts">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3 class="chart-title">学期平均分趋势</h3>
+                    </div>
+                    
+                    <div class="chart-filter">
+                        <button class="filter-btn active">全部科目</button>
+                        <button class="filter-btn">主科</button>
+                        <button class="filter-btn">理科</button>
+                        <button class="filter-btn">文科</button>
+                    </div>
+                    
+                    <div class="chart-wrapper">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 科目对比图表 -->
+            <section class="chart-section" id="subjectChartSection">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-chart-bar"></i>
+                        科目成绩对比
+                    </h2>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3 class="chart-title">当前学期科目对比</h3>
+                    </div>
+                    
+                    <div class="chart-wrapper">
+                        <canvas id="subjectChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- 底部导航 -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item active">
+                <i class="fas fa-home nav-icon"></i>
+                <span>首页</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-chart-line nav-icon"></i>
+                <span>分析</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-history nav-icon"></i>
+                <span>历史</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-user nav-icon"></i>
+                <span>我的</span>
+            </a>
+        </nav>
+    </div>
+    
+    <script>
+        // 图表实例
+        let trendChart, subjectChart;
+        
+        // 当前选中的考试、班级和学生
+        let currentExam = null;
+        let currentClass = null;
+        let currentStudent = null;
+        let currentClassStudents = [];
+        let previousExamData = null;
+        
+        // 模拟考试数据
+        const examsData = [
+            {
+                id: 1,
+                name: "2023-2024学年第一学期期末考试",
+                date: "2023-12-15",
+                classes: [
+                    {
+                        id: "class1",
+                        name: "软件工程1班",
+                        students: [
+                            {
+                                id: "stu101",
+                                name: "张三",
+                                gender: "男",
+                                subjects: [
+                                    {name: "语文", score: 85},
+                                    {name: "数学", score: 96},
+                                    {name: "英语", score: 89},
+                                    {name: "物理", score: 78},
+                                    {name: "化学", score: 86},
+                                    {name: "生物", score: 88},
+                                    {name: "历史", score: 92}
+                                ]
+                            },
+                            {
+                                id: "stu102",
+                                name: "李四",
+                                gender: "女",
+                                subjects: [
+                                    {name: "语文", score: 83},
+                                    {name: "数学", score: 90},
+                                    {name: "英语", score: 87},
+                                    {name: "物理", score: 79},
+                                    {name: "化学", score: 84},
+                                    {name: "生物", score: 85},
+                                    {name: "历史", score: 89}
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: "class2",
+                        name: "软件工程2班",
+                        students: [
+                            {
+                                id: "stu201",
+                                name: "王五",
+                                gender: "男",
+                                subjects: [
+                                    {name: "语文", score: 88},
+                                    {name: "数学", score: 92},
+                                    {name: "英语", score: 90},
+                                    {name: "物理", score: 82},
+                                    {name: "化学", score: 85},
+                                    {name: "生物", score: 87},
+                                    {name: "历史", score: 89}
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 2,
+                name: "2023-2024学年期中考试",
+                date: "2023-10-20",
+                classes: [
+                    {
+                        id: "class1",
+                        name: "软件工程1班",
+                        students: [
+                            {
+                                id: "stu101",
+                                name: "张三",
+                                gender: "男",
+                                subjects: [
+                                    {name: "语文", score: 82},
+                                    {name: "数学", score: 90},
+                                    {name: "英语", score: 85},
+                                    {name: "物理", score: 75},
+                                    {极简: "化学", score: 80},
+                                    {name: "生物", score: 83},
+                                    {name: "历史", score: 88}
+                                ]
+                            },
+                            {
+                                id: "stu102",
+                                name: "李四",
+                                gender: "女",
+                                subjects: [
+                                    {name: "语文", score: 80},
+                                    {name: "数学", score: 85},
+                                    {name: "英语", score: 82},
+                                    {name: "物理", score: 76},
+                                    {name: "化学", score: 78},
+                                    {name: "生物", score: 80},
+                                    {name: "历史", score: 84}
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ];
+        
+        // 初始化应用
+        function initApp() {
+            // 填充考试选择器
+            const examSelect = document.getElementById('examSelect');
+            examSelect.innerHTML = '';
+            
+            examsData.forEach(exam => {
+                const option = document.createElement('option');
+                option.value = exam.id;
+                option.textContent = exam.name;
+                examSelect.appendChild(option);
+            });
+            
+            // 添加考试切换事件
+            examSelect.addEventListener('change', function() {
+                if (!this.value) {
+                    // 重置班级和学生选择器
+                    const classSelect = document.getElementById('classSelect');
+                    classSelect.innerHTML = '<option value="">请先选择考试</option>';
+                    classSelect.disabled = true;
+                    
+                    const studentSelect = document.getElementById('studentSelect');
+                    studentSelect.innerHTML = '<option value="">请先选择班级</option>';
+                    studentSelect.disabled = true;
+                    
+                    // 隐藏数据区域
+                    hideDataSections();
+                    return;
+                }
+                
+                // 重置班级和学生选择器
+                const classSelect = document.getElementById('classSelect');
+                classSelect.innerHTML = '<option value="">加载班级中...</option>';
+                classSelect.disabled = false;
+                
+                const studentSelect = document.getElementById('studentSelect');
+                studentSelect.innerHTML = '<option value="">请先选择班级</option>';
+                studentSelect.disabled = true;
+                
+                // 加载考试数据
+                const examData = examsData.find(e => e.id == this.value);
+                if (!examData) {
+                    alert('无法加载考试数据');
+                    return;
+                }
+                
+                currentExam = examData;
+                
+                // 填充班级选择器
+                classSelect.innerHTML = '<option value="">请选择班级</option>';
+                examData.classes.forEach(cls => {
+                    const option = document.createElement('option');
+                    option.value = cls.id;
+                    option.textContent = cls.name;
+                    classSelect.appendChild(option);
+                });
+                classSelect.disabled = false;
+            });
+            
+            // 添加班级切换事件
+            const classSelect = document.getElementById('classSelect');
+            classSelect.addEventListener('change', function() {
+                if (!this.value || !currentExam) {
+                    // 重置学生选择器
+                    const studentSelect = document.getElementById('studentSelect');
+                    studentSelect.innerHTML = '<option value="">请先选择班级</option>';
+                    studentSelect.disabled = true;
+                    
+                    // 隐藏数据区域
+                    hideDataSections();
+                    return;
+                }
+                
+                const studentSelect = document.getElementById('studentSelect');
+                studentSelect.innerHTML = '<option value="">加载学生中...</option>';
+                studentSelect.disabled = false;
+                
+                // 查找选中的班级
+                const selectedClass = currentExam.classes.find(c => c.id === this.value);
+                if (!selectedClass) return;
+                
+                currentClass = selectedClass;
+                currentClassStudents = selectedClass.students;
+                
+                // 填充学生选择器
+                studentSelect.innerHTML = '<option value="">请选择学生</option>';
+                selectedClass.students.forEach(student => {
+                    const option = document.createElement('option');
+                    option.value = student.id;
+                    option.textContent = student.name;
+                    studentSelect.appendChild(option);
+                });
+                studentSelect.disabled = false;
+            });
+            
+            // 添加学生切换事件
+            const studentSelect = document.getElementById('studentSelect');
+            studentSelect.addEventListener('change', function() {
+                if (!this.value || !currentClass) {
+                    // 隐藏数据区域
+                    hideDataSections();
+                    return;
+                }
+                
+                // 查找选中的学生
+                const selectedStudent = currentClass.students.find(s => s.id === this.value);
+                if (!selectedStudent) return;
+                
+                currentStudent = selectedStudent;
+                
+                // 更新学生成绩数据
+                updateStudentData(selectedStudent);
+                
+                // 显示数据区域
+                showDataSections();
+            });
+            
+            // 初始化图表
+            initCharts();
+        }
+        
+        // 隐藏数据区域
+        function hideDataSections() {
+            document.getElementById('statsGrid').style.display = 'none';
+            document.getElementById('scoreSection').style.display = 'none';
+            document.getElementById('chartSection').style.display = 'none';
+            document.getElementById('subjectChartSection').style.display = 'none';
+            document.getElementById('dataHint').style.display = 'block';
+        }
+        
+        // 显示数据区域
+        function showDataSections() {
+            document.getElementById('statsGrid').style.display = 'grid';
+            document.getElementById('scoreSection').style.display = 'block';
+            document.getElementById('chartSection').style.display = 'block';
+            document.getElementById('subjectChartSection').style.display = 'block';
+            document.getElementById('dataHint').style.display = 'none';
+        }
+        
+        // 计算学生统计数据
+        function calculateStudentStats(student) {
+            const stats = {};
+            
+            // 计算平均分
+            const totalScore = student.subjects.reduce((sum, subject) => sum + subject.score, 0);
+            stats.average = totalScore / student.subjects.length;
+            
+            // 计算最高分和最低分
+            let highestScore = -1;
+            let lowestScore = 101;
+            let highestSubject = '';
+            let lowestSubject = '';
+            
+            student.subjects.forEach(subject => {
+                if (subject.score > highestScore) {
+                    highestScore = subject.score;
+                    highestSubject = subject.name;
+                }
+                if (subject.score < lowestScore) {
+                    lowestScore = subject.score;
+                    lowestSubject = subject.name;
+                }
+            });
+            
+            stats.highestScore = highestScore;
+            stats.highestSubject = highestSubject;
+            stats.lowestScore = lowestScore;
+            stats.lowestSubject = lowestSubject;
+            
+            // 计算班级排名
+            const studentScores = currentClassStudents.map(s => {
+                const total = s.subjects.reduce((sum, subject) => sum + subject.score, 0);
+                return { id: s.id, total };
+            });
+            
+            studentScores.sort((a, b) => b.total - a.total);
+            
+            const rankIndex = studentScores.findIndex(s => s.id === student.id);
+            stats.rank = `${rankIndex + 1}/${currentClassStudents.length}`;
+            
+            // 计算排名百分比
+            const rankPercent = ((currentClassStudents.length - rankIndex) / currentClassStudents.length * 100).toFixed(1);
+            stats.rankPercent = `前 ${rankPercent}%`;
+            
+            // 计算成绩变化（如果有上一次考试数据）
+            if (previousExamData) {
+                const prevStudent = previousExamData.classes
+                    .flatMap(c => c.students)
+                    .find(s => s.id === student.id);
+                
+                if (prevStudent) {
+                    const prevTotal = prevStudent.subjects.reduce((sum, subject) => sum + subject.score, 0);
+                    const change = ((totalScore - prevTotal) / prevTotal * 100).toFixed(1);
+                    stats.change = Math.abs(change);
+                    stats.changeDirection = change >= 0 ? 'up' : 'down';
+                }
+            }
+            
+            return stats;
+        }
+        
+        // 计算班级科目平均分
+        function calculateClassAverages() {
+            const classAverages = {};
+            
+            currentClassStudents.forEach(student => {
+                student.subjects.forEach(subject => {
+                    if (!classAverages[subject.name]) {
+                        classAverages[subject.name] = {
+                            total: 0,
+                            count: 0
+                        };
+                    }
+                    classAverages[subject.name].total += subject.score;
+                    classAverages[subject.name].count++;
+                });
+            });
+            
+            // 计算平均值
+            for (const subject in classAverages) {
+                classAverages[subject] = classAverages[subject].total / classAverages[subject].count;
+            }
+            
+            return classAverages;
+        }
+        
+        // 计算科目排名
+        function calculateSubjectRanks(student) {
+            const subjectRanks = {};
+            
+            // 初始化排名数据结构
+            const allSubjectRanks = {};
+            student.subjects.forEach(subject => {
+                allSubjectRanks[subject.name] = [];
+            });
+            
+            // 收集所有学生成绩
+            currentClassStudents.forEach(s => {
+                s.subjects.forEach(subject => {
+                    if (allSubjectRanks[subject.name]) {
+                        allSubjectRanks[subject.name].push({
+                            studentId: s.id,
+                            score: subject.score
+                        });
+                    }
+                });
+            });
+            
+            // 对每个科目进行排序
+            for (const subject in allSubjectRanks) {
+                allSubjectRanks[subject].sort((a, b) => b.score - a.score);
+                
+                // 找到当前学生的排名
+                const rankIndex = allSubjectRanks[subject].findIndex(s => s.studentId === student.id);
+                if (rankIndex !== -1) {
+                    subjectRanks[subject] = `${rankIndex + 1}/${allSubjectRanks[subject].length}`;
+                }
+            }
+            
+            return subjectRanks;
+        }
+        
+        // 更新学生数据
+        function updateStudentData(student) {
+            if (!student || !student.subjects) return;
+            
+            // 计算统计数据
+            const stats = calculateStudentStats(student);
+            const classAverages = calculateClassAverages();
+            const subjectRanks = calculateSubjectRanks(student);
+            
+            // 更新统计卡片
+            document.getElementById('avgScore').textContent = stats.average.toFixed(1);
+            
+            if (stats.change) {
+                const changeElement = document.getElementById('scoreChange');
+                changeElement.innerHTML = `
+                    <i class="fas fa-arrow-${stats.changeDirection === 'up' ? 'up' : 'down'}"></i>
+                    <span>${stats.change}%</span>
+                `;
+                changeElement.className = `stat-change ${stats.changeDirection === 'up' ? '' : 'down'}`;
+            } else {
+                document.getElementById('scoreChange').innerHTML = '<span>--%</span>';
+            }
+            
+            document.getElementById('highestScore').textContent = stats.highestScore;
+            document.getElementById('highestSubject').textContent = stats.highestSubject;
+            document.getElementById('lowestScore').textContent = stats.lowestScore;
+            document.getElementById('lowestSubject').textContent = stats.lowestSubject;
+            document.getElementById('classRank').textContent = stats.rank;
+            document.getElementById('rankPercent').textContent = stats.rankPercent;
+            
+            // 更新表格
+            const tableBody = document.getElementById('scoreTableBody');
+            tableBody.innerHTML = '';
+            
+            student.subjects.forEach(subject => {
+                const row = document.createElement('tr');
+                
+                // 确定成绩等级
+                let gradeClass = 'score-average';
+                if (subject.score >= 90) gradeClass = 'score-excellent';
+                else if (subject.score >= 80) gradeClass = 'score-good';
+                else if (subject.score >= 70) gradeClass = 'score-average';
+                else gradeClass = 'score-poor';
+                
+                // 获取班级平均分和排名
+                const classAvg = classAverages[subject.name] ? classAverages[subject.name].toFixed(1) : '--';
+                const rank = subjectRanks[subject.name] || '--';
+                
+                row.innerHTML = `
+                    <td class="subject-name">${subject.name}</td>
+                    <td class="score-cell ${gradeClass}">${subject.score}</td>
+                    <td>${subject.score >= 90 ? '优秀' : subject.score >= 80 ? '良好' : subject.score >= 70 ? '中等' : '及格'}</td>
+                    <td>${classAvg}</td>
+                    <td>${rank}</td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+            
+            // 更新图表
+            updateCharts(student);
+        }
+        
+        // 初始化图表
+        function initCharts() {
+            // 趋势图表（初始为空）
+            const trendCtx = document.getElementById('trendChart').getContext('2d');
+            trendChart = new Chart(trendCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '平均分',
+                        data: [],
+                        borderColor: '#4361ee',
+                        backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#4361ee',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                            padding: 10,
+                            titleFont: { size: 12 },
+                            bodyFont: { size: 12 }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 60,
+                            max: 100,
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '分';
+                                }
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { maxRotation: 0, autoSkip: true }
+                        }
+                    }
+                }
+            });
+            
+            // 科目对比图表（初始为空）
+            const subjectCtx = document.getElementById('subjectChart').getContext('2d');
+            subjectChart = new Chart(subjectCtx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '我的成绩',
+                        data: [],
+                        backgroundColor: '#4895ef',
+                        borderColor: '#3f37c9',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                            padding: 10
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '分';
+                                }
+                            }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 更新图表
+        function updateCharts(student) {
+            if (!student || !student.subjects) return;
+            
+            // 更新科目对比图表
+            if (subjectChart) {
+                subjectChart.data.labels = student.subjects.map(s => s.name);
+                subjectChart.data.datasets[0].data = student.subjects.map(s => s.score);
+                subjectChart.update();
+            }
+            
+            // 更新趋势图表（这里需要历史数据）
+            if (trendChart) {
+                // 模拟历史数据
+                const semesterLabels = ['2020-2021第二', '2021-2022第一', '2021-2022第二', '2022-2023第一', '2022-2023第二', '2023-2024第一'];
+                const averageScores = [79.8, 80.5, 82.9, 83.7, 85.2, 87.4];
+                
+                trendChart.data.labels = semesterLabels;
+                trendChart.data.datasets[0].data = averageScores;
+                trendChart.update();
+            }
+        }
+        
+        // 启动应用
+        document.addEventListener('DOMContentLoaded', () => {
+            // 初始隐藏数据区域
+            hideDataSections();
+            
+            initApp();
+            
+            // 添加刷新图表按钮事件
+            document.getElementById('refreshCharts').addEventListener('click', function() {
+                if (trendChart) trendChart.update();
+                if (subjectChart) subjectChart.update();
+            });
+            
+            // 添加筛选按钮事件
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(el => {
+                        el.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+            
+            // 添加导航项事件
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelectorAll('.nav-item').forEach(el => {
+                        el.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+            
+            // 模拟加载上一次考试数据
+            previousExamData = examsData.find(e => e.id === 2);
+            
+            // 初始化选择第一个考试
+            const examSelect = document.getElementById('examSelect');
+            if (examSelect.options.length > 1) {
+                examSelect.value = examSelect.options[1].value;
+                examSelect.dispatchEvent(new Event('change'));
+            }
+        });
+    </script>
+</body>
+</html>
