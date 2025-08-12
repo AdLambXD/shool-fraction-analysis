@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>学生成绩可视化系统</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/charts.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/charts.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -74,7 +74,7 @@
             </div>
             
             <div class="stat-card secondary">
-                <极简 class="stat-label">
+                <div class="stat-label">
                     <i class="fas fa-crown"></i>
                     最高分
                 </div>
@@ -88,7 +88,7 @@
                     最低分
                 </div>
                 <div class="stat-value" id="lowestScore">--</div>
-                <div class="stat-subtext" id="lowestSubject">--</div>
+                <div class="stat-subtext极简" id="lowestSubject">--</div>
             </div>
             
             <div class="stat-card success">
@@ -141,60 +141,63 @@
             </div>
         </section>
         
-        <!-- 趋势图表 -->
-        <section class="chart-section" id="chartSection">
-            <div class="section-header">
-                <h2 class="section-title">
-                    <i class="fas fa-chart-line"></i>
-                    成绩趋势分析
-                </h2>
-                <div class="section-actions">
-                    <button class="action-btn">
-                        <i class="fas fa-download"></极简>
-                    </button>
-                    <button class="action-btn" id="refreshCharts">
-                        <i class="fas fa-sync-alt"></i>
-                    </button>
+        <!-- 图表容器网格 -->
+        <div class="chart-grid">
+            <!-- 趋势图表 -->
+            <section class="chart-section" id="chartSection">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-chart-line"></i>
+                        成绩趋势分析
+                    </h2>
+                    <div class="section-actions">
+                        <button class="action-btn">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button class="action-btn" id="refreshCharts">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
+                
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3 class="chart-title">学期平均分趋势</h3>
+                    </div>
+                    
+                    <div class="chart-filter">
+                        <button class="filter-btn active">全部科目</button>
+                        <button class="filter-btn">主科</button>
+                        <button class="filter-btn">理科</button>
+                        <button class="filter-btn">文科</button>
+                    </div>
+                    
+                    <div class="chart-wrapper">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+            </section>
             
-            <div class="chart-container">
-                <div class="chart-header">
-                    <h3 class="chart-title">学期平均分趋势</h3>
+            <!-- 科目对比图表 -->
+            <section class="chart-section" id="subjectChartSection">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-chart-bar"></i>
+                        科目成绩对比
+                    </h2>
                 </div>
                 
-                <div class="chart-filter">
-                    <button class="filter-btn active">全部科目</button>
-                    <button class="filter-btn">主科</button>
-                    <button class="filter-btn">理科</button>
-                    <button class="filter-btn">文科</button>
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3 class="chart-title">当前学期科目对比</h3>
+                    </div>
+                    
+                    <div class="chart-wrapper">
+                        <canvas id="subjectChart"></canvas>
+                    </div>
                 </div>
-                
-                <div class="chart-wrapper">
-                    <canvas id="trendChart"></canvas>
-                </div>
-            </div>
-        </section>
-        
-        <!-- 科目对比图表 -->
-        <section class="chart-section" id="subjectChartSection">
-            <div class="section-header">
-                <h2 class="section-title">
-                    <i class="fas fa-chart-bar"></i>
-                    科目成绩对比
-                </h2>
-            </div>
-            
-            <div class="chart-container">
-                <div class="chart-header">
-                    <h3 class="chart-title">当前学期科目对比</h3>
-                </div>
-                
-                <div class="chart-wrapper">
-                    <canvas id="subjectChart"></canvas>
-                </div>
-            </div>
-        </section>
+            </section>
+        </div>
         
         <!-- 底部导航 -->
         <nav class="bottom-nav">
@@ -217,8 +220,25 @@
         </nav>
     </div>
     
-    <script src="scripts/data.js"></script>
-    <script src="scripts/charts.js"></script>
-    <script src="scripts/main.js"></script>
+    <!-- 确保正确的加载顺序 -->
+    <script src="js/data.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/main.js"></script>
+    
+    <script>
+        // 确保所有文件加载完成后初始化应用
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化应用
+            if (typeof initApp === 'function') {
+                initApp();
+            }
+            
+            // 添加刷新图表按钮事件
+            document.getElementById('refreshCharts')?.addEventListener('click', function() {
+                if (trendChart) trendChart.update();
+                if (subjectChart) subjectChart.update();
+            });
+        });
+    </script>
 </body>
 </html>

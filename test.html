@@ -19,7 +19,7 @@
             --dark: #212529;
             --gray: #6c757d;
             --border: #dee2e6;
-            --card-shadow: 0 4极简 12px rgba(0,0,0,0.08);
+            --card-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
         
         * {
@@ -108,7 +108,7 @@
         
         .selector {
             width: 100%;
-            padding: 14px 50px 14px 16px;
+            padding: 14px 50px 14px 16极简;
             background: white;
             border: 2px solid var(--border);
             border-radius: 12px;
@@ -141,7 +141,7 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 14px;
             margin-bottom: 20px;
-            display: none; /* 初始隐藏 */
+            display: none;
         }
         
         @media (min-width: 768px) {
@@ -225,7 +225,7 @@
             box-shadow: var(--card-shadow);
             margin-bottom: 20px;
             overflow: hidden;
-            display: none; /* 初始隐藏 */
+            display: none;
         }
         
         .section-header {
@@ -328,7 +328,7 @@
             box-shadow: var(--card-shadow);
             margin-bottom: 20px;
             overflow: hidden;
-            display: none; /* 初始隐藏 */
+            display: none;
         }
         
         .chart-container {
@@ -348,9 +348,11 @@
             color: var(--dark);
         }
         
+        /* 修复图表容器布局 */
         .chart-wrapper {
             height: 280px;
             position: relative;
+            width: 100%;
         }
         
         .chart-filter {
@@ -450,6 +452,20 @@
             100% { transform: rotate(360deg); }
         }
         
+        /* 数据提示 */
+        .data-hint {
+            text-align: center;
+            padding: 30px;
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+        
+        .data-hint i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
         /* 响应式设计 */
         @media (min-width: 768px) {
             .container {
@@ -477,20 +493,17 @@
             .bottom-nav {
                 display: none;
             }
-        }
-        
-        /* 数据提示 */
-        .data-hint {
-            text-align: center;
-            padding: 30px;
-            color: var(--gray);
-            font-size: 1.1rem;
-        }
-        
-        .data-hint i {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            color: var(--primary);
+            
+            /* 大屏幕图表布局优化 */
+            .chart-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            
+            .chart-section {
+                margin-bottom: 0;
+            }
         }
     </style>
 </head>
@@ -573,7 +586,7 @@
                     最低分
                 </div>
                 <div class="stat-value" id="lowestScore">--</div>
-                <div class="stat-subtext" id="lowestSubject">--</div>
+                <div class="stat-subtext极简" id="lowestSubject">--</div>
             </div>
             
             <div class="stat-card success">
@@ -626,60 +639,63 @@
             </div>
         </section>
         
-        <!-- 趋势图表 -->
-        <section class="chart-section" id="chartSection">
-            <div class="section-header">
-                <h2 class="section-title">
-                    <i class="fas fa-chart-line"></i>
-                    成绩趋势分析
-                </h2>
-                <div class="section-actions">
-                    <button class="action-btn">
-                        <i class="fas fa-download"></i>
-                    </button>
-                    <button class="action-btn" id="refreshCharts">
-                        <i class="fas fa-sync-alt"></i>
-                    </button>
+        <!-- 图表容器网格 -->
+        <div class="chart-grid">
+            <!-- 趋势图表 -->
+            <section class="chart-section" id="chartSection">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-chart-line"></i>
+                        成绩趋势分析
+                    </h2>
+                    <div class="section-actions">
+                        <button class="action-btn">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button class="action-btn" id="refreshCharts">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
+                
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3 class="chart-title">学期平均分趋势</h3>
+                    </div>
+                    
+                    <div class="chart-filter">
+                        <button class="filter-btn active">全部科目</button>
+                        <button class="filter-btn">主科</button>
+                        <button class="filter-btn">理科</button>
+                        <button class="filter-btn">文科</button>
+                    </div>
+                    
+                    <div class="chart-wrapper">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+            </section>
             
-            <div class="chart-container">
-                <div class="chart-header">
-                    <h3 class="chart-title">学期平均分趋势</h3>
+            <!-- 科目对比图表 -->
+            <section class="chart-section" id="subjectChartSection">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-chart-bar"></i>
+                        科目成绩对比
+                    </h2>
                 </div>
                 
-                <div class="chart-filter">
-                    <button class="filter-btn active">全部科目</button>
-                    <button class="filter-btn">主科</button>
-                    <button class="filter-btn">理科</button>
-                    <button class="filter-btn">文科</button>
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3 class="chart-title">当前学期科目对比</h3>
+                    </div>
+                    
+                    <div class="chart-wrapper">
+                        <canvas id="subjectChart"></canvas>
+                    </div>
                 </div>
-                
-                <div class="chart-wrapper">
-                    <canvas id="trendChart"></canvas>
-                </div>
-            </div>
-        </section>
-        
-        <!-- 科目对比图表 -->
-        <section class="chart-section" id="subjectChartSection">
-            <div class="section-header">
-                <h2 class="section-title">
-                    <i class="fas fa-chart-bar"></i>
-                    科目成绩对比
-                </h2>
-            </div>
-            
-            <div class="chart-container">
-                <div class="chart-header">
-                    <h3 class="chart-title">当前学期科目对比</h3>
-                </div>
-                
-                <div class="chart-wrapper">
-                    <canvas id="subjectChart"></canvas>
-                </div>
-            </div>
-        </section>
+            </section>
+        </div>
         
         <!-- 底部导航 -->
         <nav class="bottom-nav">
@@ -794,7 +810,7 @@
                                     {name: "数学", score: 90},
                                     {name: "英语", score: 85},
                                     {name: "物理", score: 75},
-                                    {name: "化学", score: 80},
+                                    {极简: "化学", score: 80},
                                     {name: "生物", score: 83},
                                     {name: "历史", score: 88}
                                 ]
@@ -823,6 +839,8 @@
         function initApp() {
             // 填充考试选择器
             const examSelect = document.getElementById('examSelect');
+            examSelect.innerHTML = '';
+            
             examsData.forEach(exam => {
                 const option = document.createElement('option');
                 option.value = exam.id;
@@ -1142,29 +1160,6 @@
             updateCharts(student);
         }
         
-        // 更新图表
-        function updateCharts(student) {
-            if (!student || !student.subjects) return;
-            
-            // 更新科目对比图表
-            if (subjectChart) {
-                subjectChart.data.labels = student.subjects.map(s => s.name);
-                subjectChart.data.datasets[0].data = student.subjects.map(s => s.score);
-                subjectChart.update();
-            }
-            
-            // 更新趋势图表（这里需要历史数据）
-            if (trendChart) {
-                // 模拟历史数据
-                const semesterLabels = ['2020-2021第二', '2021-2022第一', '2021-2022第二', '2022-2023第一', '2022-2023第二', '2023-2024第一'];
-                const averageScores = [79.8, 80.5, 82.9, 83.7, 85.2, 87.4];
-                
-                trendChart.data.labels = semesterLabels;
-                trendChart.data.datasets[0].data = averageScores;
-                trendChart.update();
-            }
-        }
-        
         // 初始化图表
         function initCharts() {
             // 趋势图表（初始为空）
@@ -1262,6 +1257,29 @@
             });
         }
         
+        // 更新图表
+        function updateCharts(student) {
+            if (!student || !student.subjects) return;
+            
+            // 更新科目对比图表
+            if (subjectChart) {
+                subjectChart.data.labels = student.subjects.map(s => s.name);
+                subjectChart.data.datasets[0].data = student.subjects.map(s => s.score);
+                subjectChart.update();
+            }
+            
+            // 更新趋势图表（这里需要历史数据）
+            if (trendChart) {
+                // 模拟历史数据
+                const semesterLabels = ['2020-2021第二', '2021-2022第一', '2021-2022第二', '2022-2023第一', '2022-2023第二', '2023-2024第一'];
+                const averageScores = [79.8, 80.5, 82.9, 83.7, 85.2, 87.4];
+                
+                trendChart.data.labels = semesterLabels;
+                trendChart.data.datasets[0].data = averageScores;
+                trendChart.update();
+            }
+        }
+        
         // 启动应用
         document.addEventListener('DOMContentLoaded', () => {
             // 初始隐藏数据区域
@@ -1298,6 +1316,13 @@
             
             // 模拟加载上一次考试数据
             previousExamData = examsData.find(e => e.id === 2);
+            
+            // 初始化选择第一个考试
+            const examSelect = document.getElementById('examSelect');
+            if (examSelect.options.length > 1) {
+                examSelect.value = examSelect.options[1].value;
+                examSelect.dispatchEvent(new Event('change'));
+            }
         });
     </script>
 </body>

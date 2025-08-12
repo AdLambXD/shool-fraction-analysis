@@ -1,5 +1,5 @@
-// 模拟考试数据
-const examsData = [
+// 确保数据在全局作用域可用
+window.examsData = [
     {
         id: 1,
         name: "2023-2024学年第一学期期末考试",
@@ -105,4 +105,4 @@ const examsData = [
 ];
 
 // 模拟上一次考试数据
-const previousExamData = examsData.find(e => e.id === 2);
+window.previousExamData = window.examsData.find(e => e.id === 2);

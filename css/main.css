@@ -73,16 +73,31 @@ body {
 }
 
 /* 选择器样式 */
-.exam-selector,
-.class-selector,
-.student-selector {
-    position: relative;
-    margin-bottom: 15px;
+.selector-group {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
 }
 
-.exam-select,
-.class-select,
-.student-select {
+@media (min-width: 768px) {
+    .selector-group {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.selector-container {
+    position: relative;
+}
+
+.selector-label {
+    font-size: 0.85rem;
+    color: var(--gray);
+    margin-bottom: 6px;
+    padding-left: 8px;
+}
+
+.selector {
     width: 100%;
     padding: 14px 50px 14px 16px;
     background: white;
@@ -97,14 +112,12 @@ body {
     box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
-.exam-select:focus,
-.class-select:focus,
-.student-select:focus {
+.selector:focus {
     outline: none;
     border-color: var(--primary);
 }
 
-.select-icon {
+.selector-icon {
     position: absolute;
     right: 16px;
     top: 50%;
@@ -119,6 +132,13 @@ body {
     grid-template-columns: repeat(2, 1fr);
     gap: 14px;
     margin-bottom: 20px;
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
 
 .stat-card {
@@ -196,6 +216,7 @@ body {
     box-shadow: var(--card-shadow);
     margin-bottom: 20px;
     overflow: hidden;
+    display: none;
 }
 
 .section-header {
@@ -298,6 +319,7 @@ body {
     box-shadow: var(--card-shadow);
     margin-bottom: 20px;
     overflow: hidden;
+    display: none;
 }
 
 .chart-container {
@@ -317,9 +339,11 @@ body {
     color: var(--dark);
 }
 
+/* 修复图表容器布局 */
 .chart-wrapper {
     height: 280px;
     position: relative;
+    width: 100%;
 }
 
 .chart-filter {
@@ -419,6 +443,20 @@ body {
     100% { transform: rotate(360deg); }
 }
 
+/* 数据提示 */
+.data-hint {
+    text-align: center;
+    padding: 30px;
+    color: var(--gray);
+    font-size: 1.1rem;
+}
+
+.data-hint i {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: var(--primary);
+}
+
 /* 响应式设计 */
 @media (min-width: 768px) {
     .container {
@@ -433,26 +471,8 @@ body {
         font-size: 1.05rem;
     }
     
-    .stats-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-    
     .chart-wrapper {
         height: 320px;
-    }
-    
-    .exam-selector,
-    .class-selector,
-    .student-selector {
-        display: inline-block;
-        width: calc(33.333% - 10px);
-        margin-right: 15px;
-    }
-    
-    .exam-selector:last-child,
-    .class-selector:last-child,
-    .student-selector:last-child {
-        margin-right: 0;
     }
 }
 
@@ -463,5 +483,16 @@ body {
     
     .bottom-nav {
         display: none;
+    }
+    
+    /* 大屏幕图表布局优化 */
+    .chart-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    
+    .chart-section {
+        margin-bottom: 0;
     }
 }
