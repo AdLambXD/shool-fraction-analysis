@@ -63,6 +63,14 @@ function initApp() {
             return;
         }
         
+        // 确保 currentExam.classes 存在
+        if (!currentExam.classes || !Array.isArray(currentExam.classes)) {
+            console.error('currentExam.classes 未定义或不是数组');
+            resetStudentSelector();
+            hideDataSections();
+            return;
+        }
+        
         updateStudentSelector(this.value);
     });
     

@@ -73,6 +73,15 @@ function loadExamData(examId) {
     // 检查缓存中是否已有该考试数据
     if (examDataCache[examId]) {
         currentExam = examDataCache[examId];
+        
+        // 确保考试数据包含班级信息
+        if (!currentExam.classes || !Array.isArray(currentExam.classes)) {
+            console.error('缓存中的考试数据缺少班级信息');
+            alert('考试数据格式错误，缺少班级信息');
+            hideLoading();
+            return;
+        }
+        
         populateClassSelector(currentExam.classes);
         hideLoading();
         return;
@@ -101,6 +110,11 @@ function loadExamData(examId) {
             // 缓存考试数据
             examDataCache[examId] = examData;
             currentExam = examData;
+            
+            // 确保考试数据包含班级信息
+            if (!examData.classes || !Array.isArray(examData.classes)) {
+                throw new Error('考试数据中缺少班级信息');
+            }
             
             // 填充班级选择器
             populateClassSelector(examData.classes);
@@ -133,12 +147,30 @@ function updateStudentSelector(classId) {
     studentSelect.innerHTML = '<option value="">加载学生中...</option>';
     studentSelect.disabled = false;
     
+    // 确保 currentExam 和 currentExam.classes 存在
+    if (!currentExam || !currentExam.classes || !Array.isArray(currentExam.classes)) {
+        console.error('currentExam.classes 未定义或不是数组');
+        resetStudentSelector();
+        return;
+    }
+    
     // 查找选中的班级
     const selectedClass = currentExam.classes.find(c => c.id === classId);
-    if (!selectedClass) return;
+    if (!selectedClass) {
+        console.error(`找不到班级: ${classId}`);
+        resetStudentSelector();
+        return;
+    }
     
     currentClass = selectedClass;
     currentClassStudents = selectedClass.students;
+    
+    // 确保班级中有学生数据
+    if (!selectedClass.students || !Array.isArray(selectedClass.students)) {
+        console.error('班级数据中缺少学生信息');
+        resetStudentSelector();
+        return;
+    }
     
     // 填充学生选择器
     studentSelect.innerHTML = '<option value="">请选择学生</option>';
@@ -149,6 +181,13 @@ function updateStudentSelector(classId) {
         studentSelect.appendChild(option);
     });
     studentSelect.disabled = false;
+}
+
+// 重置学生选择器
+function resetStudentSelector() {
+    const studentSelect = document.getElementById('studentSelect');
+    studentSelect.innerHTML = '<option value="">请先选择班级</option>';
+    studentSelect.disabled = true;
 }
 
 // 计算学生统计数据
