@@ -111,11 +111,8 @@ function updateCharts(student) {
     
     // 更新趋势图表（使用历史数据）
     if (trendChart) {
-        // 如果历史数据已经加载，则更新
-        if (historicalDataCache) {
-            updateTrendChart(historicalDataCache);
-        } else {
-            // 否则尝试加载
+        // 加载历史数据
+        if (!historicalDataCache) {
             fetch('data/historical-data.json')
                 .then(response => response.json())
                 .then(data => {
@@ -125,6 +122,8 @@ function updateCharts(student) {
                 .catch(error => {
                     console.error('加载历史数据失败:', error);
                 });
+        } else {
+            updateTrendChart(historicalDataCache);
         }
     }
 }

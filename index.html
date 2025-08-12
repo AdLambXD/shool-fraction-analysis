@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>学生成绩可视化系统</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/chart.css">
@@ -16,21 +17,8 @@
                 <i class="fas fa-graduation-cap"></i>
                 学生成绩可视化系统
             </h1>
-            <p class="app-subtitle">请选择数据源并查看成绩数据</p>
+            <p class="app-subtitle">请选择考试、班级和学生查看成绩数据</p>
         </header>
-        
-        <!-- 数据源选择 -->
-        <div class="data-source-selector">
-            <div class="source-btn active" id="localSourceBtn">
-                <i class="fas fa-laptop"></i> 本地数据
-            </div>
-            <div class="source-btn" id="cloudSource1Btn">
-                <i class="fas fa-cloud"></i> Github源
-            </div>
-            <div class="source-btn" id="cloudSource2Btn">
-                <i class="fas fa-cloud"></i> Gitee源
-            </div>
-        </div>
         
         <!-- 选择器组 -->
         <div class="selector-group">
@@ -68,7 +56,7 @@
         <!-- 数据提示 -->
         <div class="data-hint" id="dataHint">
             <i class="fas fa-mouse-pointer"></i>
-            <p>请选择数据源并查看成绩数据</p>
+            <p>请选择考试、班级和学生查看成绩数据</p>
         </div>
         
         <!-- 学生信息卡片 -->
@@ -270,8 +258,6 @@
         </div>
     </footer>
     
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="js/utils.js"></script>
     <script src="js/data.js"></script>
     <script src="js/chart.js"></script>
     <script src="js/app.js"></script>

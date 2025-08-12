@@ -111,6 +111,25 @@ body {
     margin-right: 8px;
 }
 
+/* 重试按钮样式 */
+.retry-btn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.retry-btn:hover {
+    background: var(--secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
 /* 选择器样式 */
 .selector-group {
     display: grid;

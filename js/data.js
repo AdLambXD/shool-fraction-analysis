@@ -1,15 +1,3 @@
-// 云端数据源配置
-const cloudDataSources = {
-    github: {
-        name: "Github源",
-        indexUrl: "https://github.com/AdLambXD/shool-fraction-analysis/blob/main/data/index.json"
-    },
-    gitee: {
-        name: "Gitee源",
-        indexUrl: "https://gitee.com/your-username/your-repo/raw/master/exams-index.json"
-    }
-};
-
 // 本地数据源配置
 const localDataSource = {
     name: "本地数据源",
@@ -27,65 +15,42 @@ let currentClass = null;
 let currentStudent = null;
 let currentClassStudents = [];
 
-// 当前数据源
-let currentDataSource = 'local';
+// 显示加载状态
+function showLoading() {
+    document.getElementById('dataHint').innerHTML = `
+        <div class="loading-spinner"></div>
+        <p>加载数据中...</p>
+    `;
+}
+
+// 隐藏加载状态
+function hideLoading() {
+    document.getElementById('dataHint').innerHTML = `
+        <i class="fas fa-mouse-pointer"></i>
+        <p>请选择考试、班级和学生查看成绩数据</p>
+    `;
+}
 
 // 加载数据源
-function loadDataSource(source) {
+function loadDataSource() {
     showLoading();
     
-    if (source === 'local') {
-        // 加载本地索引文件
-        fetch(localDataSource.indexUrl)
-            .then(response => {
-                if (!response.ok) throw new Error('本地索引文件加载失败');
-                return response.json();
-            })
-            .then(indexData => {
-                examsIndexCache = indexData;
-                populateExamSelector(indexData.exams);
-                hideLoading();
-            })
-            .catch(error => {
-                console.error('加载本地数据失败:', error);
-                hideLoading();
-                alert('加载本地数据失败，请检查数据文件');
-            });
-    } else {
-        // 获取云端数据源配置
-        const cloudSource = cloudDataSources[source];
-        if (!cloudSource) {
+    // 加载本地索引文件
+    fetch(localDataSource.indexUrl)
+        .then(response => {
+            if (!response.ok) throw new Error('本地索引文件加载失败');
+            return response.json();
+        })
+        .then(indexData => {
+            examsIndexCache = indexData;
+            populateExamSelector(indexData.exams);
             hideLoading();
-            alert('无效的云端数据源');
-            return;
-        }
-        
-        console.log(`加载云端数据源: ${cloudSource.name}`);
-        console.log(`索引文件URL: ${cloudSource.indexUrl}`);
-        
-        // 加载云端索引文件
-        fetch(cloudSource.indexUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`网络响应异常: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(indexData => {
-                examsIndexCache = indexData;
-                console.log(`成功加载云端索引: ${indexData.name}`);
-                console.log(`最后更新: ${indexData.lastUpdated}`);
-                
-                // 填充考试选择器
-                populateExamSelector(indexData.exams);
-                hideLoading();
-            })
-            .catch(error => {
-                console.error('加载云端索引失败:', error);
-                hideLoading();
-                alert(`加载云端数据失败: ${error.message}`);
-            });
-    }
+        })
+        .catch(error => {
+            console.error('加载本地数据失败:', error);
+            hideLoading();
+            alert('加载本地数据失败，请检查数据文件');
+        });
 }
 
 // 填充考试选择器
@@ -339,4 +304,46 @@ function updateScoreTable(student, classAverages, subjectRanks) {
         
         tableBody.appendChild(row);
     });
+}
+
+// 导出成绩表格为CSV
+function exportToCSV() {
+    if (!currentStudent) return;
+    
+    let csvContent = "科目,成绩,等级,班级平均,排名\n";
+    
+    const classAverages = calculateClassAverages();
+    const subjectRanks = calculateSubjectRanks(currentStudent);
+    
+    currentStudent.subjects.forEach(subject => {
+        // 确定成绩等级
+        let gradeText = '中等';
+        if (subject.score >= 90) {
+            gradeText = '优秀';
+        } else if (subject.score >= 80) {
+            gradeText = '良好';
+        } else if (subject.score >= 70) {
+            gradeText = '中等';
+        } else if (subject.score >= 60) {
+            gradeText = '及格';
+        } else {
+            gradeText = '不及格';
+        }
+        
+        // 获取班级平均分和排名
+        const classAvg = classAverages[subject.name] ? classAverages[subject.name].toFixed(1) : '--';
+        const rank = subjectRanks[subject.name] || '--';
+        
+        csvContent += `${subject.name},${subject.score},${gradeText},${classAvg},${rank}\n`;
+    });
+    
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `${currentStudent.name}_成绩.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }

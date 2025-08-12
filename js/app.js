@@ -1,12 +1,45 @@
+// 隐藏数据区域
+function hideDataSections() {
+    document.getElementById('studentInfo').style.display = 'none';
+    document.getElementById('statsGrid').style.display = 'none';
+    document.getElementById('scoreSection').style.display = 'none';
+    document.getElementById('chartSection').style.display = 'none';
+    document.getElementById('subjectChartSection').style.display = 'none';
+    document.getElementById('dataHint').style.display = 'block';
+}
+
+// 显示数据区域
+function showDataSections() {
+    document.getElementById('studentInfo').style.display = 'block';
+    document.getElementById('statsGrid').style.display = 'grid';
+    document.getElementById('scoreSection').style.display = 'block';
+    document.getElementById('chartSection').style.display = 'block';
+    document.getElementById('subjectChartSection').style.display = 'block';
+    document.getElementById('dataHint').style.display = 'none';
+}
+
+// 重置选择器
+function resetSelectors() {
+    document.getElementById('examSelect').innerHTML = '<option value="">请选择考试</option>';
+    document.getElementById('classSelect').innerHTML = '<option value="">请先选择考试</option>';
+    document.getElementById('classSelect').disabled = true;
+    document.getElementById('studentSelect').innerHTML = '<option value="">请先选择班级</option>';
+    document.getElementById('studentSelect').disabled = true;
+}
+
+// 重置学生选择器
+function resetStudentSelector() {
+    document.getElementById('studentSelect').innerHTML = '<option value="">请先选择班级</option>';
+    document.getElementById('studentSelect').disabled = true;
+}
+
 // 初始化应用
 function initApp() {
-    // 设置默认数据源为本地
-    setDataSource('local');
+    // 初始隐藏数据区域
+    hideDataSections();
     
-    // 添加数据源切换事件
-    document.getElementById('localSourceBtn').addEventListener('click', () => setDataSource('local'));
-    document.getElementById('cloudSource1Btn').addEventListener('click', () => setDataSource('github'));
-    document.getElementById('cloudSource2Btn').addEventListener('click', () => setDataSource('gitee'));
+    // 加载本地数据
+    loadDataSource();
     
     // 添加考试切换事件
     const examSelect = document.getElementById('examSelect');
@@ -51,68 +84,6 @@ function initApp() {
     
     // 初始化图表
     initCharts();
-}
-
-// 设置数据源
-function setDataSource(source) {
-    currentDataSource = source;
-    
-    // 更新UI
-    document.querySelectorAll('.source-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    document.getElementById(`${source}SourceBtn`).classList.add('active');
-    
-    // 重置选择器
-    resetSelectors();
-    
-    // 隐藏数据区域
-    hideDataSections();
-    
-    // 加载数据
-    loadDataSource(source);
-}
-
-// 更新学生数据
-function updateStudentData(student) {
-    if (!student || !student.subjects) return;
-    
-    // 更新学生信息卡片
-    document.getElementById('studentName').textContent = student.name;
-    document.getElementById('studentClass').textContent = currentClass.name;
-    
-    // 计算统计数据
-    const stats = calculateStudentStats(student);
-    const classAverages = calculateClassAverages();
-    const subjectRanks = calculateSubjectRanks(student);
-    
-    // 更新学生信息卡片中的总分和平均分
-    document.getElementById('studentTotalScore').textContent = stats.totalScore;
-    document.getElementById('studentAvgScore').textContent = stats.average.toFixed(1);
-    
-    // 更新统计卡片
-    document.getElementById('avgScore').textContent = stats.average.toFixed(1);
-    document.getElementById('highestScore').textContent = stats.highestScore;
-    document.getElementById('highestSubject').textContent = stats.highestSubject;
-    document.getElementById('lowestScore').textContent = stats.lowestScore;
-    document.getElementById('lowestSubject').textContent = stats.lowestSubject;
-    document.getElementById('classRank').textContent = stats.rank;
-    document.getElementById('rankPercent').textContent = stats.rankPercent;
-    
-    // 更新表格
-    updateScoreTable(student, classAverages, subjectRanks);
-    
-    // 更新图表
-    updateCharts(student);
-}
-
-// 启动应用
-document.addEventListener('DOMContentLoaded', () => {
-    // 初始隐藏数据区域
-    hideDataSections();
-    
-    // 初始化应用
-    initApp();
     
     // 添加刷新图表按钮事件
     document.getElementById('refreshCharts').addEventListener('click', function() {
@@ -155,4 +126,40 @@ document.addEventListener('DOMContentLoaded', () => {
             this.classList.add('active');
         });
     });
-});
+}
+
+// 更新学生数据
+function updateStudentData(student) {
+    if (!student || !student.subjects) return;
+    
+    // 更新学生信息卡片
+    document.getElementById('studentName').textContent = student.name;
+    document.getElementById('studentClass').textContent = currentClass.name;
+    
+    // 计算统计数据
+    const stats = calculateStudentStats(student);
+    const classAverages = calculateClassAverages();
+    const subjectRanks = calculateSubjectRanks(student);
+    
+    // 更新学生信息卡片中的总分和平均分
+    document.getElementById('studentTotalScore').textContent = stats.totalScore;
+    document.getElementById('studentAvgScore').textContent = stats.average.toFixed(1);
+    
+    // 更新统计卡片
+    document.getElementById('avgScore').textContent = stats.average.toFixed(1);
+    document.getElementById('highestScore').textContent = stats.highestScore;
+    document.getElementById('highestSubject').textContent = stats.highestSubject;
+    document.getElementById('lowestScore').textContent = stats.lowestScore;
+    document.getElementById('lowestSubject').textContent = stats.lowestSubject;
+    document.getElementById('classRank').textContent = stats.rank;
+    document.getElementById('rankPercent').textContent = stats.rankPercent;
+    
+    // 更新表格
+    updateScoreTable(student, classAverages, subjectRanks);
+    
+    // 更新图表
+    updateCharts(student);
+}
+
+// 启动应用
+document.addEventListener('DOMContentLoaded', initApp);
