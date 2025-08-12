@@ -25,9 +25,11 @@
     color: var(--dark);
 }
 
+/* 修复图表容器布局 */
 .chart-wrapper {
     height: 280px;
     position: relative;
+    width: 100%;
 }
 
 .chart-filter {
@@ -60,6 +62,19 @@
 .filter-btn.active, .filter-btn:hover {
     background: var(--primary);
     color: white;
+}
+
+/* 大屏幕图表布局优化 */
+@media (min-width: 992px) {
+    .chart-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    
+    .chart-section {
+        margin-bottom: 0;
+    }
 }
 
 @media (min-width: 768px) {

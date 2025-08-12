@@ -35,6 +35,7 @@
             padding: 16px;
             color: var(--dark);
             line-height: 1.6;
+            padding-bottom: 70px;
         }
         
         .container {
@@ -79,6 +80,44 @@
             font-size: 0.95rem;
             max-width: 90%;
             margin: 0 auto;
+        }
+        
+        /* 数据源选择器 */
+        .data-source-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .source-btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            color: var(--dark);
+            font-weight: 500;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        
+        .source-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+        
+        .source-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .source-btn i {
+            margin-right: 8px;
         }
         
         /* 选择器样式 */
@@ -505,6 +544,97 @@
                 margin-bottom: 0;
             }
         }
+        
+        /* 新增样式 */
+        .student-info {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            padding: 20px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .student-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .student-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+        
+        .student-details {
+            flex: 1;
+        }
+        
+        .student-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .student-class {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+        
+        .student-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .student-stat {
+            background: var(--primary-light);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .stat-label-sm {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+        
+        .stat-value-lg {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        /* 移动端优化 */
+        @media (max-width: 767px) {
+            .source-btn {
+                min-width: 100px;
+                padding: 10px 8px;
+                font-size: 0.85rem;
+            }
+            
+            .stat-card {
+                padding: 15px 10px;
+            }
+            
+            .stat-value {
+                font-size: 1.5rem;
+            }
+            
+            .student-stats {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -515,8 +645,21 @@
                 <i class="fas fa-graduation-cap"></i>
                 学生成绩可视化系统
             </h1>
-            <p class="app-subtitle">请选择考试、班级和学生查看成绩数据</p>
+            <p class="app-subtitle">请选择数据源并查看成绩数据</p>
         </header>
+        
+        <!-- 数据源选择 -->
+        <div class="data-source-selector">
+            <div class="source-btn active" id="localSourceBtn">
+                <i class="fas fa-laptop"></i> 本地数据
+            </div>
+            <div class="source-btn" id="cloudSource1Btn">
+                <i class="fas fa-cloud"></i> Github源
+            </div>
+            <div class="source-btn" id="cloudSource2Btn">
+                <i class="fas fa-cloud"></i> Gitee源
+            </div>
+        </div>
         
         <!-- 选择器组 -->
         <div class="selector-group">
@@ -554,7 +697,31 @@
         <!-- 数据提示 -->
         <div class="data-hint" id="dataHint">
             <i class="fas fa-mouse-pointer"></i>
-            <p>请选择考试、班级和学生查看成绩数据</p>
+            <p>请选择数据源并查看成绩数据</p>
+        </div>
+        
+        <!-- 学生信息卡片 -->
+        <div class="student-info" id="studentInfo">
+            <div class="student-header">
+                <div class="student-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="student-details">
+                    <div class="student-name" id="studentName">--</div>
+                    <div class="student-class" id="studentClass">--</div>
+                </div>
+            </div>
+            
+            <div class="student-stats">
+                <div class="student-stat">
+                    <div class="stat-label-sm">总分</div>
+                    <div class="stat-value-lg" id="studentTotalScore">--</div>
+                </div>
+                <div class="student-stat">
+                    <div class="stat-label-sm">平均分</div>
+                    <div class="stat-value-lg" id="studentAvgScore">--</div>
+                </div>
+            </div>
         </div>
         
         <!-- 统计卡片 -->
@@ -586,7 +753,7 @@
                     最低分
                 </div>
                 <div class="stat-value" id="lowestScore">--</div>
-                <div class="stat-subtext极简" id="lowestSubject">--</div>
+                <div class="stat-subtext" id="lowestSubject">--</div>
             </div>
             
             <div class="stat-card success">
@@ -607,10 +774,10 @@
                     科目成绩详情
                 </h2>
                 <div class="section-actions">
-                    <button class="action-btn">
+                    <button class="action-btn" id="exportBtn">
                         <i class="fas fa-download"></i>
                     </button>
-                    <button class="action-btn">
+                    <button class="action-btn" id="fullscreenBtn">
                         <i class="fas fa-expand"></i>
                     </button>
                 </div>
@@ -649,7 +816,7 @@
                         成绩趋势分析
                     </h2>
                     <div class="section-actions">
-                        <button class="action-btn">
+                        <button class="action-btn" id="exportChartBtn">
                             <i class="fas fa-download"></i>
                         </button>
                         <button class="action-btn" id="refreshCharts">
@@ -719,12 +886,16 @@
     </div>
     <footer>
         <div class="footer-content">
-            <a href="#">帮助</a>
-            <a href="#">隐私</a>
-            <a href="https://github.com/AdLambXD/shool-fraction-analysis/blob/main/LICENSE">条款</a>
+            <div class="footer-social">
+                <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="WeChat"><i class="fab fa-weixin"></i></a>
+            </div>
         </div>
         <div class="footer-copyright">
-            AdLamb © 2025 本软件使用 Apache License 2.0 许可协议
+            <p>Copyright © 2025 AdLamb. 保留所有权利。</p>
+            <a href="https://github.com/AdLambXD/shool-fraction-analysis/blob/main/LICENSE" class="license-info">本软件使用 Apache License 2.0 许可协议</a>
+            <p class="version-info">版本 1.0.0</p>
         </div>
     </footer>
     <script>
@@ -736,237 +907,302 @@
         let currentClass = null;
         let currentStudent = null;
         let currentClassStudents = [];
-        let previousExamData = null;
         
-        // 模拟考试数据
-        const examsData = [
-            {
-                id: 1,
-                name: "2023-2024学年第一学期期末考试",
-                date: "2023-12-15",
-                classes: [
-                    {
-                        id: "class1",
-                        name: "软件工程1班",
-                        students: [
-                            {
-                                id: "stu101",
-                                name: "张三",
-                                gender: "男",
-                                subjects: [
-                                    {name: "语文", score: 85},
-                                    {name: "数学", score: 96},
-                                    {name: "英语", score: 89},
-                                    {name: "物理", score: 78},
-                                    {name: "化学", score: 86},
-                                    {name: "生物", score: 88},
-                                    {name: "历史", score: 92}
-                                ]
-                            },
-                            {
-                                id: "stu102",
-                                name: "李四",
-                                gender: "女",
-                                subjects: [
-                                    {name: "语文", score: 83},
-                                    {name: "数学", score: 90},
-                                    {name: "英语", score: 87},
-                                    {name: "物理", score: 79},
-                                    {name: "化学", score: 84},
-                                    {name: "生物", score: 85},
-                                    {name: "历史", score: 89}
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        id: "class2",
-                        name: "软件工程2班",
-                        students: [
-                            {
-                                id: "stu201",
-                                name: "王五",
-                                gender: "男",
-                                subjects: [
-                                    {name: "语文", score: 88},
-                                    {name: "数学", score: 92},
-                                    {name: "英语", score: 90},
-                                    {name: "物理", score: 82},
-                                    {name: "化学", score: 85},
-                                    {name: "生物", score: 87},
-                                    {name: "历史", score: 89}
-                                ]
-                            }
-                        ]
-                    }
-                ]
+        // 当前数据源
+        let currentDataSource = 'local';
+        
+        // 数据缓存
+        let examsIndexCache = null;
+        let examDataCache = {};
+        let historicalDataCache = null;
+        
+        // 本地数据源配置
+        const localDataSource = {
+            name: "本地数据源",
+            indexUrl: "data/index.json"
+        };
+        
+        // 云端数据源配置
+        const cloudDataSources = {
+            github: {
+                name: "Github源",
+                indexUrl: "https://raw.githubusercontent.com/your-username/your-repo/main/exams-index.json"
             },
-            {
-                id: 2,
-                name: "2023-2024学年期中考试",
-                date: "2023-10-20",
-                classes: [
-                    {
-                        id: "class1",
-                        name: "软件工程1班",
-                        students: [
-                            {
-                                id: "stu101",
-                                name: "张三",
-                                gender: "男",
-                                subjects: [
-                                    {name: "语文", score: 82},
-                                    {name: "数学", score: 90},
-                                    {name: "英语", score: 85},
-                                    {name: "物理", score: 75},
-                                    {极简: "化学", score: 80},
-                                    {name: "生物", score: 83},
-                                    {name: "历史", score: 88}
-                                ]
-                            },
-                            {
-                                id: "stu102",
-                                name: "李四",
-                                gender: "女",
-                                subjects: [
-                                    {name: "语文", score: 80},
-                                    {name: "数学", score: 85},
-                                    {name: "英语", score: 82},
-                                    {name: "物理", score: 76},
-                                    {name: "化学", score: 78},
-                                    {name: "生物", score: 80},
-                                    {name: "历史", score: 84}
-                                ]
-                            }
-                        ]
-                    }
-                ]
+            gitee: {
+                name: "Gitee源",
+                indexUrl: "https://gitee.com/your-username/your-repo/raw/master/exams-index.json"
+            },
+            custom: {
+                name: "自定义云源",
+                indexUrl: "https://your-custom-domain.com/exams-index.json"
             }
-        ];
+        };
         
         // 初始化应用
         function initApp() {
-            // 填充考试选择器
-            const examSelect = document.getElementById('examSelect');
-            examSelect.innerHTML = '';
+            // 设置默认数据源为本地
+            setDataSource('local');
             
-            examsData.forEach(exam => {
-                const option = document.createElement('option');
-                option.value = exam.id;
-                option.textContent = exam.name;
-                examSelect.appendChild(option);
-            });
+            // 添加数据源切换事件
+            document.getElementById('localSourceBtn').addEventListener('click', () => setDataSource('local'));
+            document.getElementById('cloudSource1Btn').addEventListener('click', () => setDataSource('github'));
+            document.getElementById('cloudSource2Btn').addEventListener('click', () => setDataSource('gitee'));
             
             // 添加考试切换事件
+            const examSelect = document.getElementById('examSelect');
             examSelect.addEventListener('change', function() {
                 if (!this.value) {
-                    // 重置班级和学生选择器
-                    const classSelect = document.getElementById('classSelect');
-                    classSelect.innerHTML = '<option value="">请先选择考试</option>';
-                    classSelect.disabled = true;
-                    
-                    const studentSelect = document.getElementById('studentSelect');
-                    studentSelect.innerHTML = '<option value="">请先选择班级</option>';
-                    studentSelect.disabled = true;
-                    
-                    // 隐藏数据区域
+                    resetSelectors();
                     hideDataSections();
                     return;
                 }
                 
-                // 重置班级和学生选择器
-                const classSelect = document.getElementById('classSelect');
-                classSelect.innerHTML = '<option value="">加载班级中...</option>';
-                classSelect.disabled = false;
-                
-                const studentSelect = document.getElementById('studentSelect');
-                studentSelect.innerHTML = '<option value="">请先选择班级</option>';
-                studentSelect.disabled = true;
-                
-                // 加载考试数据
-                const examData = examsData.find(e => e.id == this.value);
-                if (!examData) {
-                    alert('无法加载考试数据');
-                    return;
-                }
-                
-                currentExam = examData;
-                
-                // 填充班级选择器
-                classSelect.innerHTML = '<option value="">请选择班级</option>';
-                examData.classes.forEach(cls => {
-                    const option = document.createElement('option');
-                    option.value = cls.id;
-                    option.textContent = cls.name;
-                    classSelect.appendChild(option);
-                });
-                classSelect.disabled = false;
+                const examId = parseInt(this.value);
+                loadExamData(examId);
             });
             
             // 添加班级切换事件
             const classSelect = document.getElementById('classSelect');
             classSelect.addEventListener('change', function() {
                 if (!this.value || !currentExam) {
-                    // 重置学生选择器
-                    const studentSelect = document.getElementById('studentSelect');
-                    studentSelect.innerHTML = '<option value="">请先选择班级</option>';
-                    studentSelect.disabled = true;
-                    
-                    // 隐藏数据区域
+                    resetStudentSelector();
                     hideDataSections();
                     return;
                 }
                 
-                const studentSelect = document.getElementById('studentSelect');
-                studentSelect.innerHTML = '<option value="">加载学生中...</option>';
-                studentSelect.disabled = false;
-                
-                // 查找选中的班级
-                const selectedClass = currentExam.classes.find(c => c.id === this.value);
-                if (!selectedClass) return;
-                
-                currentClass = selectedClass;
-                currentClassStudents = selectedClass.students;
-                
-                // 填充学生选择器
-                studentSelect.innerHTML = '<option value="">请选择学生</option>';
-                selectedClass.students.forEach(student => {
-                    const option = document.createElement('option');
-                    option.value = student.id;
-                    option.textContent = student.name;
-                    studentSelect.appendChild(option);
-                });
-                studentSelect.disabled = false;
+                updateStudentSelector(this.value);
             });
             
             // 添加学生切换事件
             const studentSelect = document.getElementById('studentSelect');
             studentSelect.addEventListener('change', function() {
                 if (!this.value || !currentClass) {
-                    // 隐藏数据区域
                     hideDataSections();
                     return;
                 }
                 
-                // 查找选中的学生
                 const selectedStudent = currentClass.students.find(s => s.id === this.value);
-                if (!selectedStudent) return;
-                
-                currentStudent = selectedStudent;
-                
-                // 更新学生成绩数据
-                updateStudentData(selectedStudent);
-                
-                // 显示数据区域
-                showDataSections();
+                if (selectedStudent) {
+                    currentStudent = selectedStudent;
+                    updateStudentData(selectedStudent);
+                    showDataSections();
+                }
             });
             
             // 初始化图表
             initCharts();
         }
         
+        // 设置数据源
+        function setDataSource(source) {
+            currentDataSource = source;
+            
+            // 更新UI
+            document.querySelectorAll('.source-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`${source}SourceBtn`).classList.add('active');
+            
+            // 重置选择器
+            resetSelectors();
+            
+            // 隐藏数据区域
+            hideDataSections();
+            
+            // 加载数据
+            loadDataSource(source);
+        }
+        
+        // 重置选择器
+        function resetSelectors() {
+            document.getElementById('examSelect').innerHTML = '<option value="">请选择考试</option>';
+            document.getElementById('classSelect').innerHTML = '<option value="">请先选择考试</option>';
+            document.getElementById('classSelect').disabled = true;
+            document.getElementById('studentSelect').innerHTML = '<option value="">请先选择班级</option>';
+            document.getElementById('studentSelect').disabled = true;
+        }
+        
+        // 重置学生选择器
+        function resetStudentSelector() {
+            document.getElementById('studentSelect').innerHTML = '<option value="">请先选择班级</option>';
+            document.getElementById('studentSelect').disabled = true;
+        }
+        
+        // 加载数据源
+        function loadDataSource(source) {
+            showLoading();
+            
+            if (source === 'local') {
+                // 加载本地索引文件
+                fetch(localDataSource.indexUrl)
+                    .then(response => {
+                        if (!response.ok) throw new Error('本地索引文件加载失败');
+                        return response.json();
+                    })
+                    .then(indexData => {
+                        examsIndexCache = indexData;
+                        populateExamSelector(indexData.exams);
+                        hideLoading();
+                    })
+                    .catch(error => {
+                        console.error('加载本地数据失败:', error);
+                        hideLoading();
+                        alert('加载本地数据失败，请检查数据文件');
+                    });
+            } else {
+                // 获取云端数据源配置
+                const cloudSource = cloudDataSources[source];
+                if (!cloudSource) {
+                    hideLoading();
+                    alert('无效的云端数据源');
+                    return;
+                }
+                
+                console.log(`加载云端数据源: ${cloudSource.name}`);
+                console.log(`索引文件URL: ${cloudSource.indexUrl}`);
+                
+                // 加载云端索引文件
+                fetch(cloudSource.indexUrl)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`网络响应异常: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(indexData => {
+                        examsIndexCache = indexData;
+                        console.log(`成功加载云端索引: ${indexData.name}`);
+                        console.log(`最后更新: ${indexData.lastUpdated}`);
+                        
+                        // 填充考试选择器
+                        populateExamSelector(indexData.exams);
+                        hideLoading();
+                    })
+                    .catch(error => {
+                        console.error('加载云端索引失败:', error);
+                        hideLoading();
+                        alert(`加载云端数据失败: ${error.message}`);
+                    });
+            }
+        }
+        
+        // 填充考试选择器
+        function populateExamSelector(exams) {
+            const examSelect = document.getElementById('examSelect');
+            examSelect.innerHTML = '<option value="">请选择考试</option>';
+            
+            exams.forEach(exam => {
+                const option = document.createElement('option');
+                option.value = exam.id;
+                option.textContent = exam.name;
+                examSelect.appendChild(option);
+            });
+        }
+        
+        // 加载考试数据
+        function loadExamData(examId) {
+            showLoading();
+            
+            // 检查缓存中是否已有该考试数据
+            if (examDataCache[examId]) {
+                currentExam = examDataCache[examId];
+                populateClassSelector(currentExam.classes);
+                hideLoading();
+                return;
+            }
+            
+            // 从索引中查找考试数据文件位置
+            const examInfo = examsIndexCache.exams.find(e => e.id == examId);
+            if (!examInfo) {
+                alert('找不到考试信息');
+                hideLoading();
+                return;
+            }
+            
+            console.log(`加载考试数据: ${examInfo.name}`);
+            console.log(`数据文件URL: ${examInfo.dataFile}`);
+            
+            // 加载考试数据文件
+            fetch(examInfo.dataFile)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`网络响应异常: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(examData => {
+                    // 缓存考试数据
+                    examDataCache[examId] = examData;
+                    currentExam = examData;
+                    
+                    // 填充班级选择器
+                    populateClassSelector(examData.classes);
+                    hideLoading();
+                })
+                .catch(error => {
+                    console.error('加载考试数据失败:', error);
+                    hideLoading();
+                    alert(`加载考试数据失败: ${examInfo.name}\n${error.message}`);
+                });
+        }
+        
+        // 填充班级选择器
+        function populateClassSelector(classes) {
+            const classSelect = document.getElementById('classSelect');
+            classSelect.innerHTML = '<option value="">请选择班级</option>';
+            
+            classes.forEach(cls => {
+                const option = document.createElement('option');
+                option.value = cls.id;
+                option.textContent = cls.name;
+                classSelect.appendChild(option);
+            });
+            classSelect.disabled = false;
+        }
+        
+        // 更新学生选择器
+        function updateStudentSelector(classId) {
+            const studentSelect = document.getElementById('studentSelect');
+            studentSelect.innerHTML = '<option value="">加载学生中...</option>';
+            studentSelect.disabled = false;
+            
+            // 查找选中的班级
+            const selectedClass = currentExam.classes.find(c => c.id === classId);
+            if (!selectedClass) return;
+            
+            currentClass = selectedClass;
+            currentClassStudents = selectedClass.students;
+            
+            // 填充学生选择器
+            studentSelect.innerHTML = '<option value="">请选择学生</option>';
+            selectedClass.students.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student.id;
+                option.textContent = student.name;
+                studentSelect.appendChild(option);
+            });
+            studentSelect.disabled = false;
+        }
+        
+        // 显示加载状态
+        function showLoading() {
+            document.getElementById('dataHint').innerHTML = `
+                <div class="loading-spinner"></div>
+                <p>加载数据中...</p>
+            `;
+        }
+        
+        // 隐藏加载状态
+        function hideLoading() {
+            document.getElementById('dataHint').innerHTML = `
+                <i class="fas fa-mouse-pointer"></i>
+                <p>请选择考试、班级和学生查看成绩数据</p>
+            `;
+        }
+        
         // 隐藏数据区域
         function hideDataSections() {
+            document.getElementById('studentInfo').style.display = 'none';
             document.getElementById('statsGrid').style.display = 'none';
             document.getElementById('scoreSection').style.display = 'none';
             document.getElementById('chartSection').style.display = 'none';
@@ -976,6 +1212,7 @@
         
         // 显示数据区域
         function showDataSections() {
+            document.getElementById('studentInfo').style.display = 'block';
             document.getElementById('statsGrid').style.display = 'grid';
             document.getElementById('scoreSection').style.display = 'block';
             document.getElementById('chartSection').style.display = 'block';
@@ -983,13 +1220,47 @@
             document.getElementById('dataHint').style.display = 'none';
         }
         
+        // 更新学生数据
+        function updateStudentData(student) {
+            if (!student || !student.subjects) return;
+            
+            // 更新学生信息卡片
+            document.getElementById('studentName').textContent = student.name;
+            document.getElementById('studentClass').textContent = currentClass.name;
+            
+            // 计算统计数据
+            const stats = calculateStudentStats(student);
+            const classAverages = calculateClassAverages();
+            const subjectRanks = calculateSubjectRanks(student);
+            
+            // 更新学生信息卡片中的总分和平均分
+            document.getElementById('studentTotalScore').textContent = stats.totalScore;
+            document.getElementById('studentAvgScore').textContent = stats.average.toFixed(1);
+            
+            // 更新统计卡片
+            document.getElementById('avgScore').textContent = stats.average.toFixed(1);
+            document.getElementById('highestScore').textContent = stats.highestScore;
+            document.getElementById('highestSubject').textContent = stats.highestSubject;
+            document.getElementById('lowestScore').textContent = stats.lowestScore;
+            document.getElementById('lowestSubject').textContent = stats.lowestSubject;
+            document.getElementById('classRank').textContent = stats.rank;
+            document.getElementById('rankPercent').textContent = stats.rankPercent;
+            
+            // 更新表格
+            updateScoreTable(student, classAverages, subjectRanks);
+            
+            // 更新图表
+            updateCharts(student);
+        }
+        
         // 计算学生统计数据
         function calculateStudentStats(student) {
             const stats = {};
             
-            // 计算平均分
+            // 计算总分和平均分
             const totalScore = student.subjects.reduce((sum, subject) => sum + subject.score, 0);
             stats.average = totalScore / student.subjects.length;
+            stats.totalScore = totalScore;
             
             // 计算最高分和最低分
             let highestScore = -1;
@@ -1027,20 +1298,6 @@
             // 计算排名百分比
             const rankPercent = ((currentClassStudents.length - rankIndex) / currentClassStudents.length * 100).toFixed(1);
             stats.rankPercent = `前 ${rankPercent}%`;
-            
-            // 计算成绩变化（如果有上一次考试数据）
-            if (previousExamData) {
-                const prevStudent = previousExamData.classes
-                    .flatMap(c => c.students)
-                    .find(s => s.id === student.id);
-                
-                if (prevStudent) {
-                    const prevTotal = prevStudent.subjects.reduce((sum, subject) => sum + subject.score, 0);
-                    const change = ((totalScore - prevTotal) / prevTotal * 100).toFixed(1);
-                    stats.change = Math.abs(change);
-                    stats.changeDirection = change >= 0 ? 'up' : 'down';
-                }
-            }
             
             return stats;
         }
@@ -1106,37 +1363,8 @@
             return subjectRanks;
         }
         
-        // 更新学生数据
-        function updateStudentData(student) {
-            if (!student || !student.subjects) return;
-            
-            // 计算统计数据
-            const stats = calculateStudentStats(student);
-            const classAverages = calculateClassAverages();
-            const subjectRanks = calculateSubjectRanks(student);
-            
-            // 更新统计卡片
-            document.getElementById('avgScore').textContent = stats.average.toFixed(1);
-            
-            if (stats.change) {
-                const changeElement = document.getElementById('scoreChange');
-                changeElement.innerHTML = `
-                    <i class="fas fa-arrow-${stats.changeDirection === 'up' ? 'up' : 'down'}"></i>
-                    <span>${stats.change}%</span>
-                `;
-                changeElement.className = `stat-change ${stats.changeDirection === 'up' ? '' : 'down'}`;
-            } else {
-                document.getElementById('scoreChange').innerHTML = '<span>--%</span>';
-            }
-            
-            document.getElementById('highestScore').textContent = stats.highestScore;
-            document.getElementById('highestSubject').textContent = stats.highestSubject;
-            document.getElementById('lowestScore').textContent = stats.lowestScore;
-            document.getElementById('lowestSubject').textContent = stats.lowestSubject;
-            document.getElementById('classRank').textContent = stats.rank;
-            document.getElementById('rankPercent').textContent = stats.rankPercent;
-            
-            // 更新表格
+        // 更新成绩表格
+        function updateScoreTable(student, classAverages, subjectRanks) {
             const tableBody = document.getElementById('scoreTableBody');
             tableBody.innerHTML = '';
             
@@ -1145,10 +1373,24 @@
                 
                 // 确定成绩等级
                 let gradeClass = 'score-average';
-                if (subject.score >= 90) gradeClass = 'score-excellent';
-                else if (subject.score >= 80) gradeClass = 'score-good';
-                else if (subject.score >= 70) gradeClass = 'score-average';
-                else gradeClass = 'score-poor';
+                let gradeText = '中等';
+                
+                if (subject.score >= 90) {
+                    gradeClass = 'score-excellent';
+                    gradeText = '优秀';
+                } else if (subject.score >= 80) {
+                    gradeClass = 'score-good';
+                    gradeText = '良好';
+                } else if (subject.score >= 70) {
+                    gradeClass = 'score-average';
+                    gradeText = '中等';
+                } else if (subject.score >= 60) {
+                    gradeClass = 'score-average';
+                    gradeText = '及格';
+                } else {
+                    gradeClass = 'score-poor';
+                    gradeText = '不及格';
+                }
                 
                 // 获取班级平均分和排名
                 const classAvg = classAverages[subject.name] ? classAverages[subject.name].toFixed(1) : '--';
@@ -1157,16 +1399,13 @@
                 row.innerHTML = `
                     <td class="subject-name">${subject.name}</td>
                     <td class="score-cell ${gradeClass}">${subject.score}</td>
-                    <td>${subject.score >= 90 ? '优秀' : subject.score >= 80 ? '良好' : subject.score >= 70 ? '中等' : '及格'}</td>
+                    <td>${gradeText}</td>
                     <td>${classAvg}</td>
                     <td>${rank}</td>
                 `;
                 
                 tableBody.appendChild(row);
             });
-            
-            // 更新图表
-            updateCharts(student);
         }
         
         // 初始化图表
@@ -1277,11 +1516,31 @@
                 subjectChart.update();
             }
             
-            // 更新趋势图表（这里需要历史数据）
+            // 更新趋势图表（使用历史数据）
             if (trendChart) {
-                // 模拟历史数据
-                const semesterLabels = ['2020-2021第二', '2021-2022第一', '2021-2022第二', '2022-2023第一', '2022-2023第二', '2023-2024第一'];
-                const averageScores = [79.8, 80.5, 82.9, 83.7, 85.2, 87.4];
+                // 如果历史数据已经加载，则更新
+                if (historicalDataCache) {
+                    updateTrendChart(historicalDataCache);
+                } else {
+                    // 否则尝试加载
+                    fetch('historical-data.json')
+                        .then(response => response.json())
+                        .then(data => {
+                            historicalDataCache = data;
+                            updateTrendChart(data);
+                        })
+                        .catch(error => {
+                            console.error('加载历史数据失败:', error);
+                        });
+                }
+            }
+        }
+        
+        // 更新趋势图表
+        function updateTrendChart(historicalData) {
+            if (trendChart && historicalData && historicalData.length > 0) {
+                const semesterLabels = historicalData.map(d => d.semester);
+                const averageScores = historicalData.map(d => d.average);
                 
                 trendChart.data.labels = semesterLabels;
                 trendChart.data.datasets[0].data = averageScores;
@@ -1289,11 +1548,57 @@
             }
         }
         
+        // 导出成绩表格为CSV
+        function exportToCSV() {
+            if (!currentStudent) return;
+            
+            let csvContent = "科目,成绩,等级,班级平均,排名\n";
+            
+            const classAverages = calculateClassAverages();
+            const subjectRanks = calculateSubjectRanks(currentStudent);
+            
+            currentStudent.subjects.forEach(subject => {
+                // 确定成绩等级
+                let gradeText = '中等';
+                if (subject.score >= 90) {
+                    gradeText = '优秀';
+                } else if (subject.score >= 80) {
+                    gradeText = '良好';
+                } else if (subject.score >= 70) {
+                    gradeText = '中等';
+                } else if (subject.score >= 60) {
+                    gradeText = '及格';
+                } else {
+                    gradeText = '不及格';
+                }
+                
+                // 获取班级平均分和排名
+                const classAvg = classAverages[subject.name] ? classAverages[subject.name].toFixed(1) : '--';
+                const rank = subjectRanks[subject.name] || '--';
+                
+                csvContent += `${subject.name},${subject.score},${gradeText},${classAvg},${rank}\n`;
+            });
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", `${currentStudent.name}_成绩.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
         // 启动应用
         document.addEventListener('DOMContentLoaded', () => {
             // 初始隐藏数据区域
             hideDataSections();
             
+            // 初始化图表
+            initCharts();
+            
+            // 初始化应用
             initApp();
             
             // 添加刷新图表按钮事件
@@ -1302,36 +1607,20 @@
                 if (subjectChart) subjectChart.update();
             });
             
-            // 添加筛选按钮事件
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.filter-btn').forEach(el => {
-                        el.classList.remove('active');
-                    });
-                    this.classList.add('active');
-                });
+            // 添加导出按钮事件
+            document.getElementById('exportBtn').addEventListener('click', exportToCSV);
+            
+            // 添加全屏按钮事件
+            document.getElementById('fullscreenBtn').addEventListener('click', function() {
+                const elem = document.getElementById('scoreSection');
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen();
+                } else if (elem.webkitRequestFullscreen) {
+                    elem.webkitRequestFullscreen();
+                } else if (elem.msRequestFullscreen) {
+                    elem.msRequestFullscreen();
+                }
             });
-            
-            // 添加导航项事件
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    document.querySelectorAll('.nav-item').forEach(el => {
-                        el.classList.remove('active');
-                    });
-                    this.classList.add('active');
-                });
-            });
-            
-            // 模拟加载上一次考试数据
-            previousExamData = examsData.find(e => e.id === 2);
-            
-            // 初始化选择第一个考试
-            const examSelect = document.getElementById('examSelect');
-            if (examSelect.options.length > 1) {
-                examSelect.value = examSelect.options[1].value;
-                examSelect.dispatchEvent(new Event('change'));
-            }
         });
     </script>
 </body>

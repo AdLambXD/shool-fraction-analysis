@@ -1,0 +1,25 @@
+{
+    "name": "云端学生成绩数据",
+    "lastUpdated": "2025-08-12",
+    "exams": [
+      {
+        "id": 1,
+        "name": "2024-2025学年第二学期期末考试",
+        "date": "2023-12-15",
+        "dataFile": "data/exam_1.json"
+      },
+      {
+        "id": 2,
+        "name": "2023-2024学年期中考试",
+        "date": "2023-10-20",
+        "dataFile": "data/exams.json"
+      },
+      {
+        "id": 3,
+        "name": "2023-2024学年期末考试",
+        "date": "2024-06-20",
+        "dataFile": "https://your-cloud-domain.com/exams/exam-3.json"
+      }
+    ]
+  }
+  
