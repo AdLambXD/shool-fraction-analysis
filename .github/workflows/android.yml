@@ -17,7 +17,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      # 2. 设置 Java (禁用缓存)
+      # 2. 设置 Java
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -53,18 +53,34 @@ jobs:
           npm install -g cordova@12.0.0
           cordova telemetry off
 
-      # 7. 添加 Android 平台
+      # 7. 初始化 Cordova 项目
+      - name: Initialize Cordova project
+        run: |
+          # 创建 Cordova 项目结构
+          cordova create cordova-app com.example.scorevisualizer "学生成绩可视化系统"
+          
+          # 复制项目文件到 Cordova 的 www 目录
+          cp -r * cordova-app/www/
+          rm -rf cordova-app/www/cordova-app
+          
+          # 复制 config.xml 到 Cordova 项目根目录
+          cp config.xml cordova-app/
+          
+          # 进入 Cordova 项目目录
+          cd cordova-app
+
+      # 8. 添加 Android 平台
       - name: Add Android platform
         run: |
           cordova platform add android@12.0.0
           cordova requirements android
 
-      # 8. 接受 Android 许可
+      # 9. 接受 Android 许可
       - name: Accept Android licenses
         run: |
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
-      # 9. APK 签名设置
+      # 10. APK 签名设置
       - name: Set up signing
         if: ${{ github.event_name == 'release' || github.event_name == 'workflow_dispatch' }}
         run: |
@@ -76,7 +92,7 @@ jobs:
         env:
           ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
 
-      # 10. 构建 APK
+      # 11. 构建 APK
       - name: Build APK
         env:
           ORG_GRADLE_PROJECT_org.gradle.jvmargs: "-Xmx3072m -XX:MaxMetaspaceSize=1024m"
@@ -99,7 +115,7 @@ jobs:
             exit 1
           fi
 
-      # 11. 上传构建产物
+      # 12. 上传构建产物
       - name: Upload APK artifacts
         uses: actions/upload-artifact@v4
         with:
