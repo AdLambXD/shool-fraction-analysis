@@ -22,11 +22,11 @@ jobs:
         node-version: 18
         cache: 'npm'
 
-    - name: Install dependencies
+    - name: Install specific Capacitor version
       run: |
-        npm install -g @capacitor/cli
-        npm install -g @capacitor/core
-        npm install -g @capacitor/android
+        npm install -g @capacitor/cli@5.0.0
+        npm install -g @capacitor/core@5.0.0
+        npm install -g @capacitor/android@5.0.0
 
     - name: Create Capacitor project
       run: |
@@ -35,24 +35,24 @@ jobs:
         cd temp-app
         
         # 初始化 npm 项目
-        npm init -y || { echo "npm init failed"; exit 1; }
+        npm init -y
         
         # 安装 Capacitor
-        npm install @capacitor/core @capacitor/cli @capacitor/android || { echo "npm install failed"; exit 1; }
+        npm install @capacitor/core@5.0.0 @capacitor/cli@5.0.0 @capacitor/android@5.0.0
         
-        # 初始化 Capacitor
-        npx cap init --web-dir public --app-name "学生成绩可视化系统" --app-id "com.example.scorevisualizer" --yes || { echo "cap init failed"; exit 1; }
+        # 初始化 Capacitor (使用兼容的选项)
+        npx cap init "学生成绩可视化系统" "com.example.scorevisualizer" --web-dir public --yes
         
         # 添加 Android 平台
-        npx cap add android || { echo "cap add android failed"; exit 1; }
+        npx cap add android
         
         # 复制项目文件
         mkdir -p public
-        cp -r ../* public/ || { echo "cp failed"; exit 1; }
+        cp -r ../* public/
         rm -rf public/android public/.github
         
         # 同步 Capacitor
-        npx cap sync || { echo "cap sync failed"; exit 1; }
+        npx cap sync
         
         # 验证目录结构
         echo "当前目录: $(pwd)"
