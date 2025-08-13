@@ -23,20 +23,44 @@ jobs:
         cache: 'npm'
 
     - name: Install dependencies
-      run: npm install -g @capacitor/cli
+      run: |
+        npm install -g @capacitor/cli
+        npm install -g @capacitor/core
+        npm install -g @capacitor/android
 
     - name: Create Capacitor project
       run: |
-        mkdir temp-app
+        # 创建临时目录
+        mkdir -p temp-app
         cd temp-app
-        npm init -y
-        npm install @capacitor/core @capacitor/cli @capacitor/android
-        npx cap init --web-dir public --app-name "学生成绩可视化系统" --app-id "com.example.scorevisualizer"
-        npx cap add android
+        
+        # 初始化 npm 项目
+        npm init -y || { echo "npm init failed"; exit 1; }
+        
+        # 安装 Capacitor
+        npm install @capacitor/core @capacitor/cli @capacitor/android || { echo "npm install failed"; exit 1; }
+        
+        # 初始化 Capacitor
+        npx cap init --web-dir public --app-name "学生成绩可视化系统" --app-id "com.example.scorevisualizer" --yes || { echo "cap init failed"; exit 1; }
+        
+        # 添加 Android 平台
+        npx cap add android || { echo "cap add android failed"; exit 1; }
+        
+        # 复制项目文件
         mkdir -p public
-        cp -r ../* public/
+        cp -r ../* public/ || { echo "cp failed"; exit 1; }
         rm -rf public/android public/.github
-        npx cap sync
+        
+        # 同步 Capacitor
+        npx cap sync || { echo "cap sync failed"; exit 1; }
+        
+        # 验证目录结构
+        echo "当前目录: $(pwd)"
+        ls -la
+        echo "public 目录:"
+        ls -la public
+        echo "Android 目录:"
+        ls -la android/app/src/main/assets/public
 
     - name: Setup JDK
       uses: actions/setup-java@v4
@@ -82,7 +106,7 @@ jobs:
 
     - name: Upload Release Asset
       id: upload-release-asset
-      uses: actions/upload-release-asset@v1  # 使用 v1 版本
+      uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
