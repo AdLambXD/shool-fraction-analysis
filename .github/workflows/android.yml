@@ -8,29 +8,29 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30  # 添加超时限制
+    timeout-minutes: 30
 
     steps:
       # 1. 检出代码
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # 获取完整历史记录
+          fetch-depth: 0
 
-      # 2. 设置 Java
+      # 2. 设置 Java (禁用缓存)
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: 'gradle'  # 添加 Gradle 缓存
+          cache: ''  # 禁用缓存
 
       # 3. 安装 Android SDK
       - name: Set up Android SDK
         uses: android-actions/setup-android@v2
         with:
-          ndk-version: '25.2.9519653'  # 指定 NDK 版本
-          cmake-version: '3.22.1'  # 指定 CMake 版本
+          ndk-version: '25.2.9519653'
+          cmake-version: '3.22.1'
 
       # 4. 配置环境变量
       - name: Configure Android ENV
@@ -38,7 +38,7 @@ jobs:
           echo "ANDROID_SDK_ROOT=$HOME/android-sdk" >> $GITHUB_ENV
           echo "PATH=$HOME/android-sdk/cmdline-tools/latest/bin:$HOME/android-sdk/platform-tools:$PATH" >> $GITHUB_ENV
           echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
-          echo "GRADLE_OPTS=-Dorg.gradle.daemon=false" >> $GITHUB_ENV  # 禁用 Gradle 守护进程
+          echo "GRADLE_OPTS=-Dorg.gradle.daemon=false" >> $GITHUB_ENV
 
       # 5. 安装 Node.js
       - name: Set up Node.js
@@ -51,25 +51,24 @@ jobs:
       - name: Install Cordova
         run: |
           npm install -g cordova@12.0.0
-          cordova telemetry off  # 禁用遥测
+          cordova telemetry off
 
       # 7. 添加 Android 平台
       - name: Add Android platform
         run: |
           cordova platform add android@12.0.0
-          cordova requirements android  # 检查环境要求
+          cordova requirements android
 
       # 8. 接受 Android 许可
       - name: Accept Android licenses
         run: |
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true  # 添加错误容忍
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
       # 9. APK 签名设置
       - name: Set up signing
         if: ${{ github.event_name == 'release' || github.event_name == 'workflow_dispatch' }}
         run: |
           echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 -d > keystore.keystore
-          # 验证密钥库文件
           if [ ! -s "keystore.keystore" ]; then
             echo "密钥库文件为空或不存在"
             exit 1
@@ -82,7 +81,6 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_org.gradle.jvmargs: "-Xmx3072m -XX:MaxMetaspaceSize=1024m"
         run: |
-          # 添加构建前清理
           cordova clean android
           
           if [ -f "keystore.keystore" ]; then
@@ -109,28 +107,4 @@ jobs:
           path: |
             platforms/android/app/build/outputs/apk/**/*.apk
           retention-days: 7
-          if-no-files-found: error  # 如果没有文件则报错
-
-      # 12. 创建 GitHub Release (可选)
-      - name: Create Release
-        if: ${{ github.event_name == 'release' }}
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
-
-      # 13. 上传到 Release (可选)
-      - name: Upload Release Asset
-        if: ${{ github.event_name == 'release' }}
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: platforms/android/app/build/outputs/apk/release/app-release.apk
-          asset_name: app-release.apk
-          asset_content_type: application/vnd.android.package-archive
+          if-no-files-found: error
