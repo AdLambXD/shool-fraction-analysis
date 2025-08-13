@@ -1,4 +1,4 @@
-name: Cordova Android Build
+name: Build and Release Android APK
 
 on:
   push:
@@ -6,81 +6,100 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-android:
     runs-on: ubuntu-latest
+    environment: production
 
     steps:
-      # 1. 检出代码
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
 
-      # 2. 设置 Java
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
 
-      # 3. 安装 Android SDK
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v2
+    - name: Install dependencies
+      run: npm install -g @capacitor/cli
 
-      # 4. 配置环境变量
-      - name: Configure Android ENV
-        run: |
-          echo "ANDROID_SDK_ROOT=$HOME/android-sdk" >> $GITHUB_ENV
-          echo "PATH=$HOME/android-sdk/cmdline-tools/latest/bin:$HOME/android-sdk/platform-tools:$PATH" >> $GITHUB_ENV
-          echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
+    - name: Create Capacitor project
+      run: |
+        # 创建临时目录
+        mkdir temp-app
+        cd temp-app
+        
+        # 初始化 npm 项目
+        npm init -y
+        
+        # 安装 Capacitor
+        npm install @capacitor/core @capacitor/cli @capacitor/android
+        
+        # 初始化 Capacitor
+        npx cap init --web-dir public --app-name "学生成绩可视化系统" --app-id "com.example.scorevisualizer"
+        
+        # 添加 Android 平台
+        npx cap add android
+        
+        # 复制项目文件到 public 目录
+        mkdir -p public
+        cp -r ../* public/
+        rm -rf public/android public/.github
+        
+        # 同步 Capacitor
+        npx cap sync
 
-      # 5. 安装 Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
+    - name: Setup JDK
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'zulu'
+        java-version: '11'
 
-      # 6. 安装 Cordova
-      - name: Install Cordova
-        run: npm install -g cordova@12.0.0
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v2
 
-      # 7. 添加 Android 平台
-      - name: Add Android platform
-        run: |
-          cordova platform add android@12.0.0
-          
-      # 8. 接受 Android 许可
-      - name: Accept Android licenses
-        run: |
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+    - name: Make Gradle Wrapper Executable
+      run: chmod +x temp-app/android/gradlew
 
-      # 9. APK 签名设置
-      - name: Set up signing
-        if: github.event_name == 'release'
-        run: |
-          echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 -d > keystore.keystore
-        env:
-          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
+    - name: Setup Keystore
+      run: |
+        echo "${{ secrets.KEYSTORE_CONTENT }}" | base64 --decode > temp-app/android/app/my-release-key.keystore
+        echo "storeFile=my-release-key.keystore" >> temp-app/android/local.properties
+        echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> temp-app/android/local.properties
+        echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> temp-app/android/local.properties
+        echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> temp-app/android/local.properties
 
-      # 10. 构建 APK
-      - name: Build APK
-        env:
-          ORG_GRADLE_PROJECT_org.gradle.jvmargs: "-Xmx3072m"
-        run: |
-          if [ -f "keystore.keystore" ]; then
-            cordova build android --release \
-              -- --keystore=keystore.keystore \
-              --storePassword=${{ secrets.STORE_PASSWORD }} \
-              --alias=${{ secrets.KEY_ALIAS }} \
-              --password=${{ secrets.KEY_PASSWORD }}
-          else
-            cordova build android
-          fi
+    - name: Build Android APK
+      run: |
+        cd temp-app/android
+        ./gradlew assembleRelease
 
-      # 11. 上传构建产物 (v4修复版)
-      - name: Upload APK artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-apk
-          path: |
-            platforms/android/app/build/outputs/apk/**/*.apk
-          retention-days: 7
+    - name: Upload APK Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: score-visualizer-app
+        path: temp-app/android/app/build/outputs/apk/release/app-release-unsigned.apk
+
+    - name: Create GitHub Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ github.run_number }}
+        release_name: Release v${{ github.run_number }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: temp-app/android/app/build/outputs/apk/release/app-release-unsigned.apk
+        asset_name: score-visualizer-v${{ github.run_number }}.apk
+        asset_content_type: application/vnd.android.package-archive
