@@ -3,7 +3,7 @@ name: Cordova Android Build
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:  # 允许手动触发
+  workflow_dispatch:
 
 jobs:
   build:
@@ -16,55 +16,55 @@ jobs:
 
       # 2. 设置 Java
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # 3. 安装 Android SDK（关键！）
+      # 3. 安装 Android SDK
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v2
 
       # 4. 配置环境变量
-      - name: Configure ENV
+      - name: Configure Android ENV
         run: |
           echo "ANDROID_SDK_ROOT=$HOME/android-sdk" >> $GITHUB_ENV
           echo "PATH=$HOME/android-sdk/cmdline-tools/latest/bin:$HOME/android-sdk/platform-tools:$PATH" >> $GITHUB_ENV
+          echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
 
       # 5. 安装 Node.js
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       # 6. 安装 Cordova
       - name: Install Cordova
-        run: npm install -g cordova@12.0.0  # 指定兼容版本
+        run: npm install -g cordova@12.0.0
 
-      # 7. 恢复依赖缓存（加速构建）
-      - name: Cache node_modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      # 8. 添加 Android 平台
+      # 7. 添加 Android 平台
       - name: Add Android platform
         run: |
           cordova platform add android@12.0.0
-
-      # 9. 【可选】APK 签名（正式包）
-      - name: Set up signing
-        if: github.event_name == 'release'  # 仅release时签名
+          
+      # 8. 接受 Android 许可
+      - name: Accept Android licenses
         run: |
-          echo "${{ secrets.KEYSTORE }}" > keystore.keystore | base64 -d
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+
+      # 9. APK 签名设置
+      - name: Set up signing
+        if: github.event_name == 'release'
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 -d > keystore.keystore
         env:
-          KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
 
       # 10. 构建 APK
       - name: Build APK
+        env:
+          ORG_GRADLE_PROJECT_org.gradle.jvmargs: "-Xmx3072m"
         run: |
           if [ -f "keystore.keystore" ]; then
             cordova build android --release \
@@ -76,11 +76,11 @@ jobs:
             cordova build android
           fi
 
-      # 11. 上传产物
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v3
+      # 11. 上传构建产物 (v4修复版)
+      - name: Upload APK artifacts
+        uses: actions/upload-artifact@v4
         with:
           name: android-apk
           path: |
-            platforms/android/app/build/outputs/apk/debug/*.apk
-            platforms/android/app/build/outputs/apk/release/*.apk
+            platforms/android/app/build/outputs/apk/**/*.apk
+          retention-days: 7
