@@ -55,11 +55,12 @@ jobs:
 
       # 7. 初始化 Cordova 项目 (修复版)
       - name: Initialize Cordova project
+        id: init-cordova
         run: |
           # 创建 Cordova 项目结构
           cordova create cordova-app com.example.scorevisualizer "学生成绩可视化系统"
           
-          # 复制项目文件到 Cordova 的 www 目录 (排除 cordova-app 目录)
+          # 复制项目文件到 Cordova 的 www 目录
           rsync -a --exclude='cordova-app' --exclude='.git' --exclude='.github' ./ cordova-app/www/
           
           # 复制 config.xml 到 Cordova 项目根目录
@@ -67,22 +68,19 @@ jobs:
             cp config.xml cordova-app/
           fi
           
-          # 进入 Cordova 项目目录
-          cd cordova-app
+          # 输出项目目录路径
+          echo "CORDOVA_PROJECT_DIR=$(pwd)/cordova-app" >> $GITHUB_ENV
           
-          # 验证文件复制
-          echo "项目文件列表:"
-          ls -la www/
-          echo "config.xml 文件:"
-          if [ -f "config.xml" ]; then
-            cat config.xml
-          else
-            echo "未找到 config.xml 文件"
-          fi
+          # 验证项目结构
+          echo "Cordova 项目目录: $CORDOVA_PROJECT_DIR"
+          ls -la cordova-app
+          echo "www 目录内容:"
+          ls -la cordova-app/www
 
-      # 8. 添加 Android 平台
+      # 8. 添加 Android 平台 (关键修复)
       - name: Add Android platform
         run: |
+          cd $CORDOVA_PROJECT_DIR
           cordova platform add android@12.0.0
           cordova requirements android
 
@@ -95,6 +93,7 @@ jobs:
       - name: Set up signing
         if: ${{ github.event_name == 'release' || github.event_name == 'workflow_dispatch' }}
         run: |
+          cd $CORDOVA_PROJECT_DIR
           echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 -d > keystore.keystore
           if [ ! -s "keystore.keystore" ]; then
             echo "密钥库文件为空或不存在"
@@ -105,9 +104,8 @@ jobs:
 
       # 11. 构建 APK
       - name: Build APK
-        env:
-          ORG_GRADLE_PROJECT_org.gradle.jvmargs: "-Xmx3072m -XX:MaxMetaspaceSize=1024m"
         run: |
+          cd $CORDOVA_PROJECT_DIR
           cordova clean android
           
           if [ -f "keystore.keystore" ]; then
@@ -131,7 +129,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: android-apk
-          path: |
-            platforms/android/app/build/outputs/apk/**/*.apk
+          path: ${{ env.CORDOVA_PROJECT_DIR }}/platforms/android/app/build/outputs/apk/**/*.apk
           retention-days: 7
           if-no-files-found: error
