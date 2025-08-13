@@ -39,7 +39,7 @@ function initApp() {
     hideDataSections();
     
     // 加载本地数据
-    loadDataSource();
+    ScoreVisualizer.loadDataSource();
     
     // 添加考试切换事件
     const examSelect = document.getElementById('examSelect');
@@ -51,41 +51,42 @@ function initApp() {
         }
         
         const examId = parseInt(this.value);
-        loadExamData(examId);
+        ScoreVisualizer.loadExamData(examId);
     });
     
     // 添加班级切换事件
     const classSelect = document.getElementById('classSelect');
     classSelect.addEventListener('change', function() {
-        if (!this.value || !currentExam) {
-            resetStudentSelector();
+        if (!this.value || !ScoreVisualizer.currentExam) {
+            ScoreVisualizer.resetStudentSelector();
             hideDataSections();
             return;
         }
         
         // 确保 currentExam.classes 存在
-        if (!currentExam.classes || !Array.isArray(currentExam.classes)) {
+        if (!ScoreVisualizer.currentExam.classes || !Array.isArray(ScoreVisualizer.currentExam.classes)) {
             console.error('currentExam.classes 未定义或不是数组');
-            resetStudentSelector();
+            ScoreVisualizer.resetStudentSelector();
             hideDataSections();
             return;
         }
         
-        updateStudentSelector(this.value);
+        ScoreVisualizer.updateStudentSelector(this.value);
     });
     
     // 添加学生切换事件
     const studentSelect = document.getElementById('studentSelect');
     studentSelect.addEventListener('change', function() {
-        if (!this.value || !currentClass) {
+        if (!this.value || !ScoreVisualizer.currentClass) {
             hideDataSections();
             return;
         }
         
-        const selectedStudent = currentClass.students.find(s => s.id === this.value);
+        const selectedStudent = ScoreVisualizer.currentClassStudents.find(s => s.id === this.value);
         if (selectedStudent) {
-            currentStudent = selectedStudent;
-            updateStudentData(selectedStudent);
+            ScoreVisualizer.currentStudent = selectedStudent;
+            // 调用 ScoreVisualizer 命名空间下的函数
+            ScoreVisualizer.updateStudentData(selectedStudent);
             showDataSections();
         }
     });
@@ -100,7 +101,7 @@ function initApp() {
     });
     
     // 添加导出按钮事件
-    document.getElementById('exportBtn').addEventListener('click', exportToCSV);
+    document.getElementById('exportBtn').addEventListener('click', ScoreVisualizer.exportToCSV);
     
     // 添加全屏按钮事件
     document.getElementById('fullscreenBtn').addEventListener('click', function() {
