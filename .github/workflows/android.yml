@@ -12,12 +12,12 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4  # 建议同时升级到 v4
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
     - name: Setup Node.js
-      uses: actions/setup-node@v4  # 建议同时升级到 v4
+      uses: actions/setup-node@v4
       with:
         node-version: 18
         cache: 'npm'
@@ -39,7 +39,7 @@ jobs:
         npx cap sync
 
     - name: Setup JDK
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
         distribution: 'zulu'
         java-version: '11'
@@ -63,7 +63,6 @@ jobs:
         cd temp-app/android
         ./gradlew assembleRelease
 
-    # 修改点：升级到 v4
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
@@ -81,10 +80,9 @@ jobs:
         draft: false
         prerelease: false
 
-    # 修改点：升级到 v2
     - name: Upload Release Asset
       id: upload-release-asset
-      uses: actions/upload-release-asset@v2
+      uses: actions/upload-release-asset@v1  # 使用 v1 版本
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
