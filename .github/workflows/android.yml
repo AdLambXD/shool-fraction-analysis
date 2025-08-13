@@ -12,12 +12,12 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4  # 建议同时升级到 v4
       with:
         fetch-depth: 0
 
     - name: Setup Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4  # 建议同时升级到 v4
       with:
         node-version: 18
         cache: 'npm'
@@ -27,28 +27,15 @@ jobs:
 
     - name: Create Capacitor project
       run: |
-        # 创建临时目录
         mkdir temp-app
         cd temp-app
-        
-        # 初始化 npm 项目
         npm init -y
-        
-        # 安装 Capacitor
         npm install @capacitor/core @capacitor/cli @capacitor/android
-        
-        # 初始化 Capacitor
         npx cap init --web-dir public --app-name "学生成绩可视化系统" --app-id "com.example.scorevisualizer"
-        
-        # 添加 Android 平台
         npx cap add android
-        
-        # 复制项目文件到 public 目录
         mkdir -p public
         cp -r ../* public/
         rm -rf public/android public/.github
-        
-        # 同步 Capacitor
         npx cap sync
 
     - name: Setup JDK
@@ -76,8 +63,9 @@ jobs:
         cd temp-app/android
         ./gradlew assembleRelease
 
+    # 修改点：升级到 v4
     - name: Upload APK Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: score-visualizer-app
         path: temp-app/android/app/build/outputs/apk/release/app-release-unsigned.apk
@@ -93,9 +81,10 @@ jobs:
         draft: false
         prerelease: false
 
+    # 修改点：升级到 v2
     - name: Upload Release Asset
       id: upload-release-asset
-      uses: actions/upload-release-asset@v1
+      uses: actions/upload-release-asset@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
