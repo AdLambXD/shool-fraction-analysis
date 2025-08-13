@@ -53,21 +53,32 @@ jobs:
           npm install -g cordova@12.0.0
           cordova telemetry off
 
-      # 7. 初始化 Cordova 项目
+      # 7. 初始化 Cordova 项目 (修复版)
       - name: Initialize Cordova project
         run: |
           # 创建 Cordova 项目结构
           cordova create cordova-app com.example.scorevisualizer "学生成绩可视化系统"
           
-          # 复制项目文件到 Cordova 的 www 目录
-          cp -r * cordova-app/www/
-          rm -rf cordova-app/www/cordova-app
+          # 复制项目文件到 Cordova 的 www 目录 (排除 cordova-app 目录)
+          rsync -a --exclude='cordova-app' --exclude='.git' --exclude='.github' ./ cordova-app/www/
           
           # 复制 config.xml 到 Cordova 项目根目录
-          cp config.xml cordova-app/
+          if [ -f "config.xml" ]; then
+            cp config.xml cordova-app/
+          fi
           
           # 进入 Cordova 项目目录
           cd cordova-app
+          
+          # 验证文件复制
+          echo "项目文件列表:"
+          ls -la www/
+          echo "config.xml 文件:"
+          if [ -f "config.xml" ]; then
+            cat config.xml
+          else
+            echo "未找到 config.xml 文件"
+          fi
 
       # 8. 添加 Android 平台
       - name: Add Android platform
