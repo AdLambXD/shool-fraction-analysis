@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/chart.css">
+    <script src="https://unpkg.com/@capacitor/core@latest/dist/capacitor.js"></script>
+    <script src="https://unpkg.com/@capacitor/filesystem@latest/dist/filesystem.js"></script>
 </head>
 <body>
     <div class="container">
@@ -20,38 +22,40 @@
             <p class="app-subtitle">请选择考试、班级和学生查看成绩数据</p>
         </header>
         
-        <!-- 选择器组 -->
-        <div class="selector-group">
-            <div class="selector-container">
-                <div class="selector-label">考试选择</div>
-                <select id="examSelect" class="selector">
-                    <option value="">请选择考试</option>
-                </select>
-                <div class="selector-icon">
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-            </div>
-            
-            <div class="selector-container">
-                <div class="selector-label">班级选择</div>
-                <select id="classSelect" class="selector" disabled>
-                    <option value="">请先选择考试</option>
-                </select>
-                <div class="selector-icon">
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-            </div>
-            
-            <div class="selector-container">
-                <div class="selector-label">学生选择</div>
-                <select id="studentSelect" class="selector" disabled>
-                    <option value="">请先选择班级</option>
-                </select>
-                <div class="selector-icon">
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-            </div>
-        </div>
+                <!-- ... existing code ... -->
+                        <!-- 选择器组 -->
+                        <div class="selector-group">
+                            <div class="selector-container">
+                                <div class="selector-label" id="examSelectLabel">考试选择</div>
+                                <select id="examSelect" class="selector" aria-labelledby="examSelectLabel">
+                                    <option value="">请选择考试</option>
+                                </select>
+                                <div class="selector-icon">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="selector-container">
+                                <div class="selector-label" id="classSelectLabel">班级选择</div>
+                                <select id="classSelect" class="selector" disabled aria-labelledby="classSelectLabel">
+                                    <option value="">请先选择考试</option>
+                                </select>
+                                <div class="selector-icon">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="selector-container">
+                                <div class="selector-label" id="studentSelectLabel">学生选择</div>
+                                <select id="studentSelect" class="selector" disabled aria-labelledby="studentSelectLabel">
+                                    <option value="">请先选择班级</option>
+                                </select>
+                                <div class="selector-icon">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                        </div>
+                <!-- ... existing code ... -->
         
         <!-- 数据提示 -->
         <div class="data-hint" id="dataHint">

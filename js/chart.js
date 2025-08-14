@@ -99,7 +99,7 @@ function initCharts() {
 }
 
 // 更新图表
-function updateCharts(student) {
+ScoreVisualizer.updateCharts = function(student) {
     if (!student || !student.subjects) return;
     
     // 更新科目对比图表
@@ -111,22 +111,22 @@ function updateCharts(student) {
     
     // 更新趋势图表（使用历史数据）
     if (trendChart) {
-        // 加载历史数据
-        if (!historicalDataCache) {
-            fetch('data/historical-data.json')
-                .then(response => response.json())
+        // 如果历史数据已经加载，则更新
+        if (ScoreVisualizer.historicalDataCache) {
+            updateTrendChart(ScoreVisualizer.historicalDataCache);
+        } else {
+            // 否则尝试加载
+            ScoreVisualizer.readFile('data/historical-data.json')
                 .then(data => {
-                    historicalDataCache = data;
+                    ScoreVisualizer.historicalDataCache = data;
                     updateTrendChart(data);
                 })
                 .catch(error => {
                     console.error('加载历史数据失败:', error);
                 });
-        } else {
-            updateTrendChart(historicalDataCache);
         }
     }
-}
+};
 
 // 更新趋势图表
 function updateTrendChart(historicalData) {
