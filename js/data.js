@@ -23,12 +23,12 @@ ScoreVisualizer.readFile = async function(path) {
     try {
         // 检查是否在原生环境中
         if (window.Capacitor && Capacitor.isNative) {
-            // 使用 Capacitor Filesystem API 读取文件
-            const file = await Filesystem.readFile({
+            // 使用 Capacitor Filesystem API 读取文件 - Android兼容方案
+            const { data } = await Filesystem.readFile({
                 path: path,
-                directory: Directory.Assets
+                directory: Directory.External
             });
-            return JSON.parse(file.data);
+            return JSON.parse(data);
         } else {
             // 在 Web 环境中使用 fetch
             const response = await fetch(path);
@@ -37,6 +37,18 @@ ScoreVisualizer.readFile = async function(path) {
         }
     } catch (error) {
         console.error('文件读取失败:', error);
+        
+        // Android备用加载方案
+        if (window.Capacitor && Capacitor.isNative) {
+            try {
+                const response = await fetch(`file:///android_asset/public/${path}`);
+                const data = await response.json();
+                return data;
+            } catch (fallbackError) {
+                console.error('备用加载方案失败:', fallbackError);
+            }
+        }
+        
         throw new Error(`文件读取失败: ${error.message}`);
     }
 };
