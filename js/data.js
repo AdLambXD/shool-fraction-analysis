@@ -23,32 +23,38 @@ ScoreVisualizer.readFile = async function(path) {
     try {
         // 检查是否在原生环境中
         if (window.Capacitor && Capacitor.isNative) {
-            // 使用 Capacitor Filesystem API 读取文件 - Android兼容方案
+            // Android环境使用Capacitor Filesystem API
             const { data } = await Filesystem.readFile({
                 path: path,
                 directory: Directory.External
             });
             return JSON.parse(data);
+        } else if (false && window.location.protocol === 'file:') {
+            // 直接文件访问使用XMLHttpRequest
+            return new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                xhr.open('GET', path, true);
+                xhr.responseType = 'json';
+                
+                xhr.onload = () => {
+                    if (xhr.status === 0 || xhr.status === 200) {
+                        resolve(xhr.response);
+                    } else {
+                        reject(new Error(`文件加载失败: ${xhr.status}`));
+                    }
+                };
+                
+                xhr.onerror = () => reject(new Error('网络请求失败'));
+                xhr.send(null);
+            });
         } else {
-            // 在 Web 环境中使用 fetch
+            // Web环境使用fetch
             const response = await fetch(path);
             if (!response.ok) throw new Error(`文件加载失败: ${response.status}`);
             return response.json();
         }
     } catch (error) {
         console.error('文件读取失败:', error);
-        
-        // Android备用加载方案
-        if (window.Capacitor && Capacitor.isNative) {
-            try {
-                const response = await fetch(`file:///android_asset/public/${path}`);
-                const data = await response.json();
-                return data;
-            } catch (fallbackError) {
-                console.error('备用加载方案失败:', fallbackError);
-            }
-        }
-        
         throw new Error(`文件读取失败: ${error.message}`);
     }
 };
