@@ -1,0 +1,523 @@
+{
+    "id": 1,
+    "name": "2023-2024学年第一学期期末考试",
+    "date": "2023-12-01",
+    "classes": [
+      {
+        "id": "2",
+        "name": "23级五专2班",
+        "students": [
+          {
+            "id": "2023631101",
+            "name": "陈政华",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 46},
+              {"name": "历史（一）", "score": 74},
+              {"name": "数学（一）", "score": 46},
+              {"name": "思想政治（一）", "score": 70},
+              {"name": "体育（一）", "score": 90},
+              {"name": "物理（一）", "score": 71},
+              {"name": "英语（一）", "score": 60},
+              {"name": "语文（一）", "score": 51}
+            ]
+          },
+          {
+            "id": "2023631102",
+            "name": "慕玉林",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 37},
+              {"name": "历史（一）", "score": 41},
+              {"name": "数学（一）", "score": 35},
+              {"name": "思想政治（一）", "score": 40},
+              {"name": "体育（一）", "score": 90},
+              {"name": "物理（一）", "score": 41},
+              {"name": "英语（一）", "score": 47},
+              {"name": "语文（一）", "score": 41}
+            ]
+          },
+          {
+            "id": "2023631103",
+            "name": "赵一诺",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 62},
+              {"name": "历史（一）", "score": 88},
+              {"name": "数学（一）", "score": 65},
+              {"name": "思想政治（一）", "score": 82},
+              {"name": "体育（一）", "score": 91},
+              {"name": "物理（一）", "score": 79},
+              {"name": "英语（一）", "score": 62},
+              {"name": "语文（一）", "score": 60}
+            ]
+          },
+          {
+            "id": "2023631104",
+            "name": "代洪霈",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 63},
+              {"name": "历史（一）", "score": 70},
+              {"name": "数学（一）", "score": 76},
+              {"name": "思想政治（一）", "score": 67},
+              {"name": "体育（一）", "score": 92},
+              {"name": "物理（一）", "score": 86},
+              {"name": "英语（一）", "score": 66},
+              {"name": "语文（一）", "score": 75}
+            ]
+          },
+          {
+            "id": "2023631105",
+            "name": "姜瑜",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 63},
+              {"name": "历史（一）", "score": 60},
+              {"name": "数学（一）", "score": 66},
+              {"name": "思想政治（一）", "score": 66},
+              {"name": "体育（一）", "score": 90},
+              {"name": "物理（一）", "score": 78},
+              {"name": "英语（一）", "score": 76},
+              {"name": "语文（一）", "score": 65}
+            ]
+          },
+          {
+            "id": "2023631106",
+            "name": "刁其顺",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 46},
+              {"name": "历史（一）", "score": 65},
+              {"name": "数学（一）", "score": 61},
+              {"name": "思想政治（一）", "score": 63},
+              {"name": "体育（一）", "score": 89},
+              {"name": "物理（一）", "score": 69},
+              {"name": "英语（一）", "score": 79},
+              {"name": "语文（一）", "score": 63}
+            ]
+          },
+          {
+            "id": "2023631107",
+            "name": "鞠金澎",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 60},
+              {"name": "历史（一）", "score": 60},
+              {"name": "数学（一）", "score": 49},
+              {"name": "思想政治（一）", "score": 63},
+              {"name": "体育（一）", "score": 88},
+              {"name": "物理（一）", "score": 69},
+              {"name": "英语（一）", "score": 60},
+              {"name": "语文（一）", "score": 67}
+            ]
+          },
+          {
+            "id": "2023631108",
+            "name": "李佳蕊",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 45},
+              {"name": "历史（一）", "score": 79},
+              {"name": "数学（一）", "score": 64},
+              {"name": "思想政治（一）", "score": 65},
+              {"name": "体育（一）", "score": 90},
+              {"name": "物理（一）", "score": 79},
+              {"name": "英语（一）", "score": 68},
+              {"name": "语文（一）", "score": 65}
+            ]
+          },
+          {
+            "id": "2023631109",
+            "name": "林现运",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 64},
+              {"name": "历史（一）", "score": 89},
+              {"name": "数学（一）", "score": 65},
+              {"name": "思想政治（一）", "score": 85},
+              {"name": "体育（一）", "score": 96},
+              {"name": "物理（一）", "score": 76},
+              {"name": "英语（一）", "score": 60},
+              {"name": "语文（一）", "score": 68}
+            ]
+          },
+          {
+            "id": "2023631110",
+            "name": "刘东轩",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 42},
+              {"name": "历史（一）", "score": 81},
+              {"name": "数学（一）", "score": 60},
+              {"name": "思想政治（一）", "score": 77},
+              {"name": "体育（一）", "score": 92},
+              {"name": "物理（一）", "score": 60},
+              {"name": "英语（一）", "score": 60},
+              {"name": "语文（一）", "score": 77}
+            ]
+          },
+          {
+            "id": "2023631111",
+            "name": "刘烜烨",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 87},
+              {"name": "历史（一）", "score": 96},
+              {"name": "数学（一）", "score": 96},
+              {"name": "思想政治（一）", "score": 98},
+              {"name": "体育（一）", "score": 90},
+              {"name": "物理（一）", "score": 91},
+              {"name": "英语（一）", "score": 95},
+              {"name": "语文（一）", "score": 96}
+            ]
+          },
+          {
+            "id": "2023631112",
+            "name": "亓军彭",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 60},
+              {"name": "历史（一）", "score": 85},
+              {"name": "数学（一）", "score": 90},
+              {"name": "思想政治（一）", "score": 92},
+              {"name": "体育（一）", "score": 93},
+              {"name": "物理（一）", "score": 92},
+              {"name": "英语（一）", "score": 84},
+              {"name": "语文（一）", "score": 84}
+            ]
+          },
+          {
+            "id": "2023631113",
+            "name": "任皓宇",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 45},
+              {"name": "历史（一）", "score": 66},
+              {"name": "数学（一）", "score": 54},
+              {"name": "思想政治（一）", "score": 73},
+              {"name": "体育（一）", "score": 90},
+              {"name": "物理（一）", "score": 78},
+              {"name": "英语（一）", "score": 72},
+              {"name": "语文（一）", "score": 47}
+            ]
+          },
+          {
+            "id": "2023631114",
+            "name": "沈飞宇",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 40},
+              {"name": "历史（一）", "score": 79},
+              {"name": "数学（一）", "score": 60},
+              {"name": "思想政治（一）", "score": 72},
+              {"name": "体育（一）", "score": 92},
+              {"name": "物理（一）", "score": 76},
+              {"name": "英语（一）", "score": 63},
+              {"name": "语文（一）", "score": 71}
+            ]
+          },
+          {
+            "id": "2023631115",
+            "name": "盛炫基",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 77},
+              {"name": "历史（一）", "score": 87},
+              {"name": "数学（一）", "score": 87},
+              {"name": "思想政治（一）", "score": 92},
+              {"name": "体育（一）", "score": 93},
+              {"name": "物理（一）", "score": 90},
+              {"name": "英语（一）", "score": 88},
+              {"name": "语文（一）", "score": 79}
+            ]
+          },
+          {
+            "id": "2023631116",
+            "name": "王皓翔",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 62},
+              {"name": "历史（一）", "score": 70},
+              {"name": "数学（一）", "score": 49},
+              {"name": "思想政治（一）", "score": 51},
+              {"name": "体育（一）", "score": 88},
+              {"name": "物理（一）", "score": 64},
+              {"name": "英语（一）", "score": 54},
+              {"name": "语文（一）", "score": 56}
+            ]
+          },
+          {
+            "id": "2023631117",
+            "name": "王志赢",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 42},
+              {"name": "历史（一）", "score": 64},
+              {"name": "数学（一）", "score": 74},
+              {"name": "思想政治（一）", "score": 60},
+              {"name": "体育（一）", "score": 97},
+              {"name": "物理（一）", "score": 79},
+              {"name": "英语（一）", "score": 92},
+              {"name": "语文（一）", "score": 67}
+            ]
+          },
+          {
+            "id": "2023631118",
+            "name": "杨书沛",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 64},
+              {"name": "历史（一）", "score": 71},
+              {"name": "数学（一）", "score": 86},
+              {"name": "思想政治（一）", "score": 85},
+              {"name": "体育（一）", "score": 94},
+              {"name": "物理（一）", "score": 89},
+              {"name": "英语（一）", "score": 76},
+              {"name": "语文（一）", "score": 72}
+            ]
+          },
+          {
+            "id": "2023631119",
+            "name": "杨兆瑞",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 45},
+              {"name": "历史（一）", "score": 67},
+              {"name": "数学（一）", "score": 60},
+              {"name": "思想政治（一）", "score": 73},
+              {"name": "体育（一）", "score": 88},
+              {"name": "物理（一）", "score": 82},
+              {"name": "英语（一）", "score": 52},
+              {"name": "语文（一）", "score": 47}
+            ]
+          },
+          {
+            "id": "2023631120",
+            "name": "杨子豪",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 65},
+              {"name": "历史（一）", "score": 69},
+              {"name": "数学（一）", "score": 81},
+              {"name": "思想政治（一）", "score": 60},
+              {"name": "体育（一）", "score": 89},
+              {"name": "物理（一）", "score": 84},
+              {"name": "英语（一）", "score": 77},
+              {"name": "语文（一）", "score": 67}
+            ]
+          },
+          {
+            "id": "2023631121",
+            "name": "于孔良",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 90},
+              {"name": "历史（一）", "score": 96},
+              {"name": "数学（一）", "score": 94},
+              {"name": "思想政治（一）", "score": 98},
+              {"name": "体育（一）", "score": 94},
+              {"name": "物理（一）", "score": 94},
+              {"name": "英语（一）", "score": 84},
+              {"name": "语文（一）", "score": 84}
+            ]
+          },
+          {
+            "id": "2023631122",
+            "name": "张明远",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 65},
+              {"name": "历史（一）", "score": 81},
+              {"name": "数学（一）", "score": 86},
+              {"name": "思想政治（一）", "score": 83},
+              {"name": "体育（一）", "score": 92},
+              {"name": "物理（一）", "score": 85},
+              {"name": "英语（一）", "score": 93},
+              {"name": "语文（一）", "score": 67}
+            ]
+          },
+          {
+            "id": "2023631123",
+            "name": "张树昌",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 37},
+              {"name": "历史（一）", "score": 72},
+              {"name": "数学（一）", "score": 48},
+              {"name": "思想政治（一）", "score": 43},
+              {"name": "体育（一）", "score": 90},
+              {"name": "物理（一）", "score": 46},
+              {"name": "英语（一）", "score": 64},
+              {"name": "语文（一）", "score": 43}
+            ]
+          },
+          {
+            "id": "2023631124",
+            "name": "赵心悦",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 0},
+              {"name": "历史（一）", "score": 0},
+              {"name": "数学（一）", "score": 0},
+              {"name": "思想政治（一）", "score": 0},
+              {"name": "体育（一）", "score": 80},
+              {"name": "物理（一）", "score": 0},
+              {"name": "英语（一）", "score": 0},
+              {"name": "语文（一）", "score": 0}
+            ]
+          },
+          {
+            "id": "2023631125",
+            "name": "郑晶晶",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 37},
+              {"name": "历史（一）", "score": 81},
+              {"name": "数学（一）", "score": 63},
+              {"name": "思想政治（一）", "score": 79},
+              {"name": "体育（一）", "score": 90},
+              {"name": "物理（一）", "score": 74},
+              {"name": "英语（一）", "score": 85},
+              {"name": "语文（一）", "score": 61}
+            ]
+          },
+          {
+            "id": "2023631126",
+            "name": "郑俊浩",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 42},
+              {"name": "历史（一）", "score": 66},
+              {"name": "数学（一）", "score": 47},
+              {"name": "思想政治（一）", "score": 72},
+              {"name": "体育（一）", "score": 95},
+              {"name": "物理（一）", "score": 64},
+              {"name": "英语（一）", "score": 60},
+              {"name": "语文（一）", "score": 64}
+            ]
+          },
+          {
+            "id": "2023631127",
+            "name": "左智杰",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 64},
+              {"name": "历史（一）", "score": 88},
+              {"name": "数学（一）", "score": 92},
+              {"name": "思想政治（一）", "score": 96},
+              {"name": "体育（一）", "score": 94},
+              {"name": "物理（一）", "score": 96},
+              {"name": "英语（一）", "score": 90},
+              {"name": "语文（一）", "score": 81}
+            ]
+          },
+          {
+            "id": "2023631128",
+            "name": "白杨",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 74},
+              {"name": "历史（一）", "score": 91},
+              {"name": "数学（一）", "score": 96},
+              {"name": "思想政治（一）", "score": 85},
+              {"name": "体育（一）", "score": 94},
+              {"name": "物理（一）", "score": 92},
+              {"name": "英语（一）", "score": 95},
+              {"name": "语文（一）", "score": 85}
+            ]
+          },
+          {
+            "id": "2023631129",
+            "name": "刁望奥",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 60},
+              {"name": "历史（一）", "score": 88},
+              {"name": "数学（一）", "score": 68},
+              {"name": "思想政治（一）", "score": 86},
+              {"name": "体育（一）", "score": 95},
+              {"name": "物理（一）", "score": 75},
+              {"name": "英语（一）", "score": 83},
+              {"name": "语文（一）", "score": 60}
+            ]
+          },
+          {
+            "id": "2023651106",
+            "name": "仝友峰",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 89},
+              {"name": "历史（一）", "score": 88},
+              {"name": "数学（一）", "score": 92},
+              {"name": "思想政治（一）", "score": 91},
+              {"name": "体育（一）", "score": 91},
+              {"name": "物理（一）", "score": 96},
+              {"name": "英语（一）", "score": 90},
+              {"name": "语文（一）", "score": 91}
+            ]
+          },
+          {
+            "id": "2023651107",
+            "name": "魏子洋",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 36},
+              {"name": "历史（一）", "score": 63},
+              {"name": "数学（一）", "score": 45},
+              {"name": "思想政治（一）", "score": 64},
+              {"name": "体育（一）", "score": 90},
+              {"name": "物理（一）", "score": 66},
+              {"name": "英语（一）", "score": 51},
+              {"name": "语文（一）", "score": 61}
+            ]
+          },
+          {
+            "id": "2023651108",
+            "name": "张慧祥",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 44},
+              {"name": "历史（一）", "score": 45},
+              {"name": "数学（一）", "score": 60},
+              {"name": "思想政治（一）", "score": 60},
+              {"name": "体育（一）", "score": 90},
+              {"name": "物理（一）", "score": 53},
+              {"name": "英语（一）", "score": 52},
+              {"name": "语文（一）", "score": 52}
+            ]
+          },
+          {
+            "id": "2023651109",
+            "name": "董馨瑜",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 66},
+              {"name": "历史（一）", "score": 79},
+              {"name": "数学（一）", "score": 82},
+              {"name": "思想政治（一）", "score": 68},
+              {"name": "体育（一）", "score": 90},
+              {"name": "物理（一）", "score": 84},
+              {"name": "英语（一）", "score": 60},
+              {"name": "语文（一）", "score": 84}
+            ]
+          },
+          {
+            "id": "2023651110",
+            "name": "齐家乐",
+            "gender": null,
+            "subjects": [
+              {"name": "化学（一）", "score": 44},
+              {"name": "历史（一）", "score": 68},
+              {"name": "数学（一）", "score": 74},
+              {"name": "思想政治（一）", "score": 64},
+              {"name": "体育（一）", "score": 90},
+              {"name": "物理（一）", "score": 69},
+              {"name": "英语（一）", "score": 76},
+              {"name": "语文（一）", "score": 60}
+            ]
+          }
+        ]
+      }
+    ]
+  }

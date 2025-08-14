@@ -1,0 +1,616 @@
+{
+  "id": 1,
+  "name": "2024-2025学年第二学期期末考试",
+  "date": "2025-7-1",
+  "classes": [
+    {
+      "id": "class1",
+      "name": "23五年制有色金属班",
+      "students": [
+        {
+          "id": "2023651101",
+          "name": "刘溶鑫",
+          "gender": null,
+          "subjects": [
+            {"name": "化学B4", "score": 70},
+            {"name": "书法（二）", "score": 80},
+            {"name": "数学(四)", "score": 52},
+            {"name": "体育（四）", "score": 87},
+            {"name": "物理（四）", "score": 72},
+            {"name": "英语（四）", "score": 68},
+            {"name": "语文（四）", "score": 60},
+            {"name": "职业道德与法治", "score": 77}
+          ]
+        },
+        {
+          "id": "2023651102",
+          "name": "张宇非",
+          "gender": null,
+          "subjects": [
+            {"name": "化学B4", "score": 34},
+            {"name": "书法（二）", "score": 80},
+            {"name": "数学(四)", "score": 36},
+            {"name": "体育（四）", "score": 84},
+            {"name": "物理（四）", "score": 48},
+            {"name": "英语（四）", "score": 60},
+            {"name": "语文（四）", "score": 24},
+            {"name": "职业道德与法治", "score": 71}
+          ]
+        },
+        {
+          "id": "2023651103",
+          "name": "焦智霖",
+          "gender": null,
+          "subjects": [
+            {"name": "化学B4", "score": 88},
+            {"name": "书法（二）", "score": 80},
+            {"name": "数学(四)", "score": 80},
+            {"name": "体育（四）", "score": 87},
+            {"name": "物理（四）", "score": 89},
+            {"name": "英语（四）", "score": 70},
+            {"name": "语文（四）", "score": 93},
+            {"name": "职业道德与法治", "score": 86}
+          ]
+        },
+        {
+          "id": "2023651104",
+          "name": "王广涛",
+          "gender": null,
+          "subjects": [
+            {"name": "化学B4", "score": 67},
+            {"name": "书法（二）", "score": 80},
+            {"name": "数学(四)", "score": 46},
+            {"name": "体育（四）", "score": 87},
+            {"name": "物理（四）", "score": 60},
+            {"name": "英语（四）", "score": 61},
+            {"name": "语文（四）", "score": 64},
+            {"name": "职业道德与法治", "score": 71}
+          ]
+        },
+        {
+          "id": "2023651105",
+          "name": "王家奥",
+          "gender": null,
+          "subjects": [
+            {"name": "化学B4", "score": 72},
+            {"name": "书法（二）", "score": 80},
+            {"name": "数学(四)", "score": 72},
+            {"name": "体育（四）", "score": 90},
+            {"name": "物理（四）", "score": 79},
+            {"name": "英语（四）", "score": 72},
+            {"name": "语文（四）", "score": 65},
+            {"name": "职业道德与法治", "score": 73}
+          ]
+        },
+        {
+          "id": "2023651106",
+          "name": "仝友峰",
+          "gender": null,
+          "subjects": [
+            {"name": "化学B4", "score": 63},
+            {"name": "书法（二）", "score": 83},
+            {"name": "数学(四)", "score": 95},
+            {"name": "体育（四）", "score": 84},
+            {"name": "物理（四）", "score": 85},
+            {"name": "英语（四）", "score": 84},
+            {"name": "语文（四）", "score": 93},
+            {"name": "职业道德与法治", "score": 89}
+          ]
+        },
+        {
+          "id": "2023651107",
+          "name": "魏子洋",
+          "gender": null,
+          "subjects": [
+            {"name": "化学B4", "score": 44},
+            {"name": "书法（二）", "score": 85},
+            {"name": "数学(四)", "score": 54},
+            {"name": "体育（四）", "score": 84},
+            {"name": "物理（四）", "score": 81},
+            {"name": "英语（四）", "score": 61},
+            {"name": "语文（四）", "score": 67},
+            {"name": "职业道德与法治", "score": 85}
+          ]
+        },
+        {
+          "id": "2023651108",
+          "name": "张慧祥",
+          "gender": null,
+          "subjects": [
+            {"name": "化学B4", "score": 0},
+            {"name": "书法（二）", "score": 0},
+            {"name": "数学(四)", "score": 0},
+            {"name": "体育（四）", "score": 0},
+            {"name": "物理（四）", "score": 0},
+            {"name": "英语（四）", "score": 0},
+            {"name": "语文（四）", "score": 0},
+            {"name": "职业道德与法治", "score": 0}
+          ]
+        },
+        {
+          "id": "2023651109",
+          "name": "董馨瑜",
+          "gender": null,
+          "subjects": [
+            {"name": "化学B4", "score": 48},
+            {"name": "书法（二）", "score": 88},
+            {"name": "数学(四)", "score": 80},
+            {"name": "体育（四）", "score": 87},
+            {"name": "物理（四）", "score": 77},
+            {"name": "英语（四）", "score": 79},
+            {"name": "语文（四）", "score": 82},
+            {"name": "职业道德与法治", "score": 88}
+          ]
+        },
+        {
+          "id": "2023651110",
+          "name": "齐家乐",
+          "gender": null,
+          "subjects": [
+            {"name": "化学B4", "score": 38},
+            {"name": "书法（二）", "score": 81},
+            {"name": "数学(四)", "score": 61},
+            {"name": "体育（四）", "score": 84},
+            {"name": "物理（四）", "score": 68},
+            {"name": "英语（四）", "score": 63},
+            {"name": "语文（四）", "score": 64},
+            {"name": "职业道德与法治", "score": 82}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "class2",
+      "name": "23五年制计算机班",
+      "students": [
+        {
+            "id": "2023631101",
+            "name": "陈政华",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 44},
+                {"name": "书法（二）", "score": 87},
+                {"name": "数学(四)", "score": 67},
+                {"name": "体育（四）", "score": 91},
+                {"name": "物理（四）", "score": 82},
+                {"name": "英语（四）", "score": 70},
+                {"name": "语文（四）", "score": 64},
+                {"name": "职业道德与法治", "score": 85}
+            ]
+        },
+        {
+            "id": "2023631102",
+            "name": "慕玉林",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 39},
+                {"name": "书法（二）", "score": 83},
+                {"name": "数学(四)", "score": 44},
+                {"name": "体育（四）", "score": 84},
+                {"name": "物理（四）", "score": 60},
+                {"name": "英语（四）", "score": 60},
+                {"name": "语文（四）", "score": 51},
+                {"name": "职业道德与法治", "score": 84}
+            ]
+        },
+        {
+            "id": "2023631103",
+            "name": "赵一诺",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 24},
+                {"name": "书法（二）", "score": 83},
+                {"name": "数学(四)", "score": 37},
+                {"name": "体育（四）", "score": 84},
+                {"name": "物理（四）", "score": 60},
+                {"name": "英语（四）", "score": 66},
+                {"name": "语文（四）", "score": 62},
+                {"name": "职业道德与法治", "score": 84}
+            ]
+        },
+        {
+            "id": "2023631104",
+            "name": "代洪霈",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 49},
+                {"name": "书法（二）", "score": 88},
+                {"name": "数学(四)", "score": 69},
+                {"name": "体育（四）", "score": 92},
+                {"name": "物理（四）", "score": 86},
+                {"name": "英语（四）", "score": 73},
+                {"name": "语文（四）", "score": 73},
+                {"name": "职业道德与法治", "score": 89}
+            ]
+        },
+        {
+            "id": "2023631105",
+            "name": "姜瑜",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 73},
+                {"name": "书法（二）", "score": 90},
+                {"name": "数学(四)", "score": 62},
+                {"name": "体育（四）", "score": 85},
+                {"name": "物理（四）", "score": 85},
+                {"name": "英语（四）", "score": 69},
+                {"name": "语文（四）", "score": 68},
+                {"name": "职业道德与法治", "score": 87}
+            ]
+        },
+        {
+            "id": "2023631106",
+            "name": "刁其顺",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 38},
+                {"name": "书法（二）", "score": 84},
+                {"name": "数学(四)", "score": 72},
+                {"name": "体育（四）", "score": 92},
+                {"name": "物理（四）", "score": 78},
+                {"name": "英语（四）", "score": 66},
+                {"name": "语文（四）", "score": 66},
+                {"name": "职业道德与法治", "score": 82}
+            ]
+        },
+        {
+            "id": "2023631107",
+            "name": "鞠金澎",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 38},
+                {"name": "书法（二）", "score": 84},
+                {"name": "数学(四)", "score": 66},
+                {"name": "体育（四）", "score": 95},
+                {"name": "物理（四）", "score": 80},
+                {"name": "英语（四）", "score": 70},
+                {"name": "语文（四）", "score": 69},
+                {"name": "职业道德与法治", "score": 84}
+            ]
+        },
+        {
+            "id": "2023631108",
+            "name": "李佳蕊",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 65},
+                {"name": "书法（二）", "score": 80},
+                {"name": "数学(四)", "score": 52},
+                {"name": "体育（四）", "score": 80},
+                {"name": "物理（四）", "score": 76},
+                {"name": "英语（四）", "score": 69},
+                {"name": "语文（四）", "score": 61},
+                {"name": "职业道德与法治", "score": 84}
+            ]
+        },
+        {
+            "id": "2023631109",
+            "name": "林现运",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 62},
+                {"name": "书法（二）", "score": 85},
+                {"name": "数学(四)", "score": 79},
+                {"name": "体育（四）", "score": 95},
+                {"name": "物理（四）", "score": 83},
+                {"name": "英语（四）", "score": 74},
+                {"name": "语文（四）", "score": 72},
+                {"name": "职业道德与法治", "score": 97}
+            ]
+        },
+        {
+            "id": "2023631110",
+            "name": "刘东轩",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 45},
+                {"name": "书法（二）", "score": 90},
+                {"name": "数学(四)", "score": 47},
+                {"name": "体育（四）", "score": 84},
+                {"name": "物理（四）", "score": 61},
+                {"name": "英语（四）", "score": 66},
+                {"name": "语文（四）", "score": 71},
+                {"name": "职业道德与法治", "score": 80}
+            ]
+        },
+        {
+            "id": "2023631111",
+            "name": "刘烜烨",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 96},
+                {"name": "书法（二）", "score": 90},
+                {"name": "数学(四)", "score": 97},
+                {"name": "体育（四）", "score": 90},
+                {"name": "物理（四）", "score": 93},
+                {"name": "英语（四）", "score": 94},
+                {"name": "语文（四）", "score": 98},
+                {"name": "职业道德与法治", "score": 95}
+            ]
+        },
+        {
+            "id": "2023631112",
+            "name": "亓军彭",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 60},
+                {"name": "书法（二）", "score": 96},
+                {"name": "数学(四)", "score": 88},
+                {"name": "体育（四）", "score": 92},
+                {"name": "物理（四）", "score": 88},
+                {"name": "英语（四）", "score": 77},
+                {"name": "语文（四）", "score": 74},
+                {"name": "职业道德与法治", "score": 95}
+            ]
+        },
+        {
+            "id": "2023631113",
+            "name": "任皓宇",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 61},
+                {"name": "书法（二）", "score": 84},
+                {"name": "数学(四)", "score": 69},
+                {"name": "体育（四）", "score": 90},
+                {"name": "物理（四）", "score": 78},
+                {"name": "英语（四）", "score": 70},
+                {"name": "语文（四）", "score": 63},
+                {"name": "职业道德与法治", "score": 84}
+            ]
+        },
+        {
+            "id": "2023631114",
+            "name": "沈飞宇",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 75},
+                {"name": "书法（二）", "score": 88},
+                {"name": "数学(四)", "score": 82},
+                {"name": "体育（四）", "score": 85},
+                {"name": "物理（四）", "score": 86},
+                {"name": "英语（四）", "score": 76},
+                {"name": "语文（四）", "score": 69},
+                {"name": "职业道德与法治", "score": 91}
+            ]
+        },
+        {
+            "id": "2023631115",
+            "name": "盛炫基",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 75},
+                {"name": "书法（二）", "score": 90},
+                {"name": "数学(四)", "score": 88},
+                {"name": "体育（四）", "score": 85},
+                {"name": "物理（四）", "score": 92},
+                {"name": "英语（四）", "score": 92},
+                {"name": "语文（四）", "score": 78},
+                {"name": "职业道德与法治", "score": 93}
+            ]
+        },
+        {
+            "id": "2023631116",
+            "name": "王皓翔",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 22},
+                {"name": "书法（二）", "score": 80},
+                {"name": "数学(四)", "score": 45},
+                {"name": "体育（四）", "score": 81},
+                {"name": "物理（四）", "score": 60},
+                {"name": "英语（四）", "score": 60},
+                {"name": "语文（四）", "score": 61},
+                {"name": "职业道德与法治", "score": 80}
+            ]
+        },
+        {
+            "id": "2023631117",
+            "name": "王志赢",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 72},
+                {"name": "书法（二）", "score": 90},
+                {"name": "数学(四)", "score": 72},
+                {"name": "体育（四）", "score": 97},
+                {"name": "物理（四）", "score": 89},
+                {"name": "英语（四）", "score": 81},
+                {"name": "语文（四）", "score": 70},
+                {"name": "职业道德与法治", "score": 93}
+            ]
+        },
+        {
+            "id": "2023631118",
+            "name": "杨书沛",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 66},
+                {"name": "书法（二）", "score": 90},
+                {"name": "数学(四)", "score": 86},
+                {"name": "体育（四）", "score": 90},
+                {"name": "物理（四）", "score": 89},
+                {"name": "英语（四）", "score": 72},
+                {"name": "语文（四）", "score": 71},
+                {"name": "职业道德与法治", "score": 90}
+            ]
+        },
+        {
+            "id": "2023631119",
+            "name": "杨兆瑞",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 0},
+                {"name": "书法（二）", "score": 0},
+                {"name": "数学(四)", "score": 0},
+                {"name": "体育（四）", "score": 0},
+                {"name": "物理（四）", "score": 0},
+                {"name": "英语（四）", "score": 0},
+                {"name": "语文（四）", "score": 0},
+                {"name": "职业道德与法治", "score": 0}
+            ]
+        },
+        {
+            "id": "2023631120",
+            "name": "杨子豪",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 92},
+                {"name": "书法（二）", "score": 87},
+                {"name": "数学(四)", "score": 80},
+                {"name": "体育（四）", "score": 80},
+                {"name": "物理（四）", "score": 87},
+                {"name": "英语（四）", "score": 81},
+                {"name": "语文（四）", "score": 61},
+                {"name": "职业道德与法治", "score": 93}
+            ]
+        },
+        {
+            "id": "2023631121",
+            "name": "于孔良",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 76},
+                {"name": "书法（二）", "score": 90},
+                {"name": "数学(四)", "score": 92},
+                {"name": "体育（四）", "score": 90},
+                {"name": "物理（四）", "score": 95},
+                {"name": "英语（四）", "score": 93},
+                {"name": "语文（四）", "score": 95},
+                {"name": "职业道德与法治", "score": 93}
+            ]
+        },
+        {
+            "id": "2023631122",
+            "name": "张明远",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 65},
+                {"name": "书法（二）", "score": 84},
+                {"name": "数学(四)", "score": 89},
+                {"name": "体育（四）", "score": 86},
+                {"name": "物理（四）", "score": 89},
+                {"name": "英语（四）", "score": 78},
+                {"name": "语文（四）", "score": 68},
+                {"name": "职业道德与法治", "score": 89}
+            ]
+        },
+        {
+            "id": "2023631123",
+            "name": "张树昌",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 0},
+                {"name": "书法（二）", "score": 0},
+                {"name": "数学(四)", "score": 0},
+                {"name": "体育（四）", "score": 0},
+                {"name": "物理（四）", "score": 0},
+                {"name": "英语（四）", "score": 0},
+                {"name": "语文（四）", "score": 0},
+                {"name": "职业道德与法治", "score": 0}
+            ]
+        },
+        {
+            "id": "2023631124",
+            "name": "赵心悦",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 0},
+                {"name": "书法（二）", "score": 0},
+                {"name": "数学(四)", "score": 0},
+                {"name": "体育（四）", "score": 0},
+                {"name": "物理（四）", "score": 0},
+                {"name": "英语（四）", "score": 0},
+                {"name": "语文（四）", "score": 0},
+                {"name": "职业道德与法治", "score": 0}
+            ]
+        },
+        {
+            "id": "2023631125",
+            "name": "郑晶晶",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 0},
+                {"name": "书法（二）", "score": 0},
+                {"name": "数学(四)", "score": 0},
+                {"name": "体育（四）", "score": 0},
+                {"name": "物理（四）", "score": 0},
+                {"name": "英语（四）", "score": 0},
+                {"name": "语文（四）", "score": 0},
+                {"name": "职业道德与法治", "score": 0}
+            ]
+        },
+        {
+            "id": "2023631126",
+            "name": "郑俊浩",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 63},
+                {"name": "书法（二）", "score": 88},
+                {"name": "数学(四)", "score": 72},
+                {"name": "体育（四）", "score": 95},
+                {"name": "物理（四）", "score": 88},
+                {"name": "英语（四）", "score": 80},
+                {"name": "语文（四）", "score": 65},
+                {"name": "职业道德与法治", "score": 85}
+            ]
+        },
+        {
+            "id": "2023631127",
+            "name": "左智杰",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 0},
+                {"name": "书法（二）", "score": 0},
+                {"name": "数学(四)", "score": 0},
+                {"name": "体育（四）", "score": 0},
+                {"name": "物理（四）", "score": 0},
+                {"name": "英语（四）", "score": 0},
+                {"name": "语文（四）", "score": 0},
+                {"name": "职业道德与法治", "score": 0}
+            ]
+        },
+        {
+            "id": "2023631128",
+            "name": "白杨",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 70},
+                {"name": "书法（二）", "score": 97},
+                {"name": "数学(四)", "score": 91},
+                {"name": "体育（四）", "score": 90},
+                {"name": "物理（四）", "score": 92},
+                {"name": "英语（四）", "score": 88},
+                {"name": "语文（四）", "score": 82},
+                {"name": "职业道德与法治", "score": 93}
+            ]
+        },
+        {
+            "id": "2023631129",
+            "name": "刁望奥",
+            "gender": null,
+            "subjects": [
+                {"name": "计算机网络基础", "score": 39},
+                {"name": "书法（二）", "score": 90},
+                {"name": "数学(四)", "score": 55},
+                {"name": "体育（四）", "score": 95},
+                {"name": "物理（四）", "score": 81},
+                {"name": "英语（四）", "score": 72},
+                {"name": "语文（四）", "score": 67},
+                {"name": "职业道德与法治", "score": 87}
+            ]
+        }
+      ]
+    },
+    {
+      "id": "class3",
+      "name": "23五年汽车维修班",
+      "students": [ 
+      ]
+    },
+    {
+      "id": "class4",
+      "name": "23五年会记班",
+      "students": [ 
+      ]
+    }
+  ]
+}
