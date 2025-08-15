@@ -16,6 +16,9 @@
 ## 结构目录
 ```
 main/
+ ├── Android/ //Android项目
+     └── app/
+         └── src/....
  ├── index.html
  ├── css/
  │   ├── style.css //主样式
