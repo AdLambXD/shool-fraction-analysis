@@ -8,7 +8,7 @@
 
 - [x] 分析每次考试成绩
 - [x] 绘制饼图 柱状图
-- [ ] 对比历史数据
+- [x] 对比历史数据
 - [ ] 简单添加成绩数据
 ## 计划
 - [x] apk 打包 （感谢steve3184）
@@ -17,24 +17,31 @@
 ```
 main/
  ├── Android/ //Android项目
-     └── app/
-         └── src/....
+ │    ├── app/
+ │    |  └── src/Android/app/src/main/assets
+ │    |                               └──“web文件”同根目录相同
+ |    └── gradlew.bat //自动构建脚本
  ├── index.html
- ├── css/
- │   ├── style.css //主样式
- │   └── chart.css //图表样式
- ├── js/
- │   ├── app.js //主逻辑
- │   ├── chart.js //图表逻辑
- │   └── data.js //数据逻辑
+ ├── exams.json //数据索引
+ ├── style.css //主样式
+ ├── script.js //主脚本
  └── data/
-     ├── exams-index.json //数据索引
      ├── 日期1.json //考试数据文件1
      ├── 日期2.json //考试数据文件2
      └── 日期3.json //考试数据文件3
 ```
 ## 运行
 运行`index.html`即可
+
+## 数据
+请先fork本项目，然后修改`exams.json`文件，将数据添加到`data/`目录下。
+数据存放在`data/`目录下，数据格式为JSON。
+如果不懂其中有模板文件可以参考`data/模板.json`
+
+## 构建apk
+运行安卓目录下的`gradlew.bat`即可
+运行前请将根目录下的除安卓文件夹的文件移动到安卓目录下的app/src/main/assets下
+自动下载文件结束后在gradle文件夹中查看构建
 
 ## 版权声明
 
