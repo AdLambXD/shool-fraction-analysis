@@ -4,252 +4,155 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>学生成绩可视化系统</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/chart.css">
-    <script src="https://unpkg.com/@capacitor/core@latest/dist/capacitor.js"></script>
-    <script src="https://unpkg.com/@capacitor/filesystem@latest/dist/filesystem.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <!-- 应用头部 -->
-        <header class="app-header">
-            <h1 class="app-title">
-                <i class="fas fa-graduation-cap"></i>
-                学生成绩可视化系统
-            </h1>
-            <p class="app-subtitle">请选择考试、班级和学生查看成绩数据</p>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <span class="mdl-layout-title">学生成绩可视化系统</span>
+                <div class="mdl-layout-spacer"></div>
+                <button id="theme-toggle-button" class="mdl-button mdl-js-button mdl-button--icon">
+                    <i class="material-icons" id="theme-icon">brightness_7</i>
+                </button>
+            </div>
         </header>
-        
-                <!-- ... existing code ... -->
-                        <!-- 选择器组 -->
-                        <div class="selector-group">
-                            <div class="selector-container">
-                                <div class="selector-label" id="examSelectLabel">考试选择</div>
-                                <select id="examSelect" class="selector" aria-labelledby="examSelectLabel">
-                                    <option value="">请选择考试</option>
-                                </select>
-                                <div class="selector-icon">
-                                    <i class="fas fa-chevron-down"></i>
+
+        <main class="mdl-layout__content">
+            <div class="page-content">
+                <!-- Filters -->
+                <div class="mdl-grid">
+                    <div class="mdl-cell mdl-cell--4-col mdl-cell--12-col-tablet">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <select class="mdl-textfield__input" id="exam-select"></select>
+                            <label class="mdl-textfield__label" for="exam-select">1. 选择考试</label>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col mdl-cell--12-col-tablet">
+                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <select class="mdl-textfield__input" id="class-select" disabled></select>
+                            <label class="mdl-textfield__label" for="class-select">2. 选择班级</label>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col mdl-cell--12-col-tablet">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <select class="mdl-textfield__input" id="student-select" disabled></select>
+                            <label class="mdl-textfield__label" for="student-select">3. 选择学生</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Card -->
+                <div id="summary-card-container" class="mdl-card mdl-shadow--2dp student-card" style="display: none;">
+                    <div class="mdl-card__title">
+                        <i class="material-icons avatar">account_circle</i>
+                        <div>
+                            <h2 class="mdl-card__title-text" id="student-name"></h2>
+                            <p id="student-class"></p>
+                        </div>
+                    </div>
+                    <div class="mdl-card__supporting-text summary-container">
+                        <div class="summary-main">
+                            <div class="summary-total-box">
+                                <div class="total-score-container">
+                                    <p class="total-label">总分</p>
+                                    <h3 id="total-score" class="total-score"></h3>
                                 </div>
                             </div>
-                            
-                            <div class="selector-container">
-                                <div class="selector-label" id="classSelectLabel">班级选择</div>
-                                <select id="classSelect" class="selector" disabled aria-labelledby="classSelectLabel">
-                                    <option value="">请先选择考试</option>
-                                </select>
-                                <div class="selector-icon">
-                                    <i class="fas fa-chevron-down"></i>
+                            <div class="summary-subjects-box">
+                                <div class="subject-item">
+                                    <p class="subject-label">最高分科目</p>
+                                    <h4 id="max-subject" class="subject-score"></h4>
                                 </div>
-                            </div>
-                            
-                            <div class="selector-container">
-                                <div class="selector-label" id="studentSelectLabel">学生选择</div>
-                                <select id="studentSelect" class="selector" disabled aria-labelledby="studentSelectLabel">
-                                    <option value="">请先选择班级</option>
-                                </select>
-                                <div class="selector-icon">
-                                    <i class="fas fa-chevron-down"></i>
+                                <div class="subject-item">
+                                    <p class="subject-label">最低分科目</p>
+                                    <h4 id="min-subject" class="subject-score"></h4>
                                 </div>
                             </div>
                         </div>
-                <!-- ... existing code ... -->
-        
-        <!-- 数据提示 -->
-        <div class="data-hint" id="dataHint">
-            <i class="fas fa-mouse-pointer"></i>
-            <p>请选择考试、班级和学生查看成绩数据</p>
-        </div>
-        
-        <!-- 学生信息卡片 -->
-        <div class="student-info" id="studentInfo">
-            <div class="student-header">
-                <div class="student-avatar">
-                    <i class="fas fa-user"></i>
+                        <div class="summary-stats-box">
+                            <div class="average-container">
+                                <p class="average-label">平均分</p>
+                                <h3 id="average-score" class="average-score"></h3>
+                            </div>
+                            <div class="additional-stats">
+                                <div class="stat-item">
+                                    <i class="material-icons stat-icon" id="trend-icon">trending_flat</i>
+                                    <span id="score-trend" class="stat-value">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="material-icons stat-icon">emoji_events</i>
+                                    <span id="class-rank" class="stat-value">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="student-details">
-                    <div class="student-name" id="studentName">--</div>
-                    <div class="student-class" id="studentClass">--</div>
-                </div>
-            </div>
-            
-            <div class="student-stats">
-                <div class="student-stat">
-                    <div class="stat-label-sm">总分</div>
-                    <div class="stat-value-lg" id="studentTotalScore">--</div>
-                </div>
-                <div class="student-stat">
-                    <div class="stat-label-sm">平均分</div>
-                    <div class="stat-value-lg" id="studentAvgScore">--</div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 统计卡片 -->
-        <div class="stats-grid" id="statsGrid">
-            <div class="stat-card primary">
-                <div class="stat-label">
-                    <i class="fas fa-calculator"></i>
-                    平均分
-                </div>
-                <div class="stat-value" id="avgScore">--</div>
-                <div class="stat-change" id="scoreChange">
-                    <i class="fas fa-arrow-up"></i>
-                    <span>--%</span>
-                </div>
-            </div>
-            
-            <div class="stat-card secondary">
-                <div class="stat-label">
-                    <i class="fas fa-crown"></i>
-                    最高分
-                </div>
-                <div class="stat-value" id="highestScore">--</div>
-                <div class="stat-subtext" id="highestSubject">--</div>
-            </div>
-            
-            <div class="stat-card warning">
-                <div class="stat-label">
-                    <i class="fas fa-arrow-down"></i>
-                    最低分
-                </div>
-                <div class="stat-value" id="lowestScore">--</div>
-                <div class="stat-subtext" id="lowestSubject">--</div>
-            </div>
-            
-            <div class="stat-card success">
-                <div class="stat-label">
-                    <i class="fas fa-trophy"></i>
-                    班级排名
-                </div>
-                <div class="stat-value" id="classRank">--</div>
-                <div class="stat-subtext" id="rankPercent">--</div>
-            </div>
-        </div>
-        
-        <!-- 成绩表格 -->
-        <section class="score-section" id="scoreSection">
-            <div class="section-header">
-                <h2 class="section-title">
-                    <i class="fas fa-table"></i>
-                    科目成绩详情
-                </h2>
-                <div class="section-actions">
-                    <button class="action-btn" id="exportBtn" title="导出成绩数据">
-                        <i class="fas fa-download"></i>
-                    </button>
-                    <button class="action-btn" id="fullscreenBtn" title="全屏显示">
-                        <i class="fas fa-expand"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <div class="table-container">
-                <table class="score-table">
-                    <thead>
-                        <tr>
-                            <th>科目</th>
-                            <th>成绩</th>
-                            <th>等级</th>
-                            <th>班级平均</th>
-                            <th>排名</th>
-                        </tr>
-                    </thead>
-                    <tbody id="scoreTableBody">
-                        <tr>
-                            <td colspan="5" class="loading-container">
-                                <div class="loading-spinner"></div>
-                                <p class="loading-text">加载成绩数据中...</p>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-        
-        <!-- 图表容器网格 -->
-        <div class="chart-grid">
-            <!-- 趋势图表 -->
-            <section class="chart-section" id="chartSection">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <i class="fas fa-chart-line"></i>
-                        成绩趋势分析
-                    </h2>
-                    <div class="section-actions">
-                        <button class="action-btn" id="exportChartBtn" title="导出图表">
-                            <i class="fas fa-download"></i>
-                        </button>
-                        <button class="action-btn" id="refreshCharts" title="刷新图表">
-                            <i class="fas fa-sync-alt"></i>
+
+                <!-- Detailed Grades -->
+                <div id="grades-container" style="display: none;">
+                    <div class="section-header">
+                        <h2 class="section-title">科目成绩详情</h2>
+                        <button id="download-csv-btn" class="mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect">
+                            <i class="material-icons">download</i>
                         </button>
                     </div>
-                </div>
-                
-                <div class="chart-container">
-                    <div class="chart-header">
-                        <h3 class="chart-title">学期平均分趋势</h3>
-                    </div>
-                    
-                    <div class="chart-filter">
-                        <button class="filter-btn active">全部科目</button>
-                        <button class="filter-btn">主科</button>
-                        <button class="filter-btn">理科</button>
-                        <button class="filter-btn">文科</button>
-                    </div>
-                    
-                    <div class="chart-wrapper">
-                        <canvas id="trendChart"></canvas>
+                    <div class="table-container mdl-shadow--2dp">
+                        <table class="mdl-data-table mdl-js-data-table">
+                            <thead><tr><th class="mdl-data-table__cell--non-numeric">科目</th><th>成绩</th><th>等级</th><th>班级平均</th></tr></thead>
+                            <tbody id="grades-table-body"></tbody>
+                        </table>
                     </div>
                 </div>
-            </section>
-            
-            <!-- 科目对比图表 -->
-            <section class="chart-section" id="subjectChartSection">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <i class="fas fa-chart-bar"></i>
-                        科目成绩对比
-                    </h2>
-                </div>
-                
-                <div class="chart-container">
-                    <div class="chart-header">
-                        <h3 class="chart-title">当前学期科目对比</h3>
+
+                <!-- Analysis Charts -->
+                <div id="analysis-container" class="mdl-grid" style="display: none;">
+                    <!-- Chart 1: Bar Chart -->
+                    <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
+                        <div class="mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title">
+                                <h2 class="mdl-card__title-text">科目成绩对比</h2>
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                <canvas id="subject-comparison-chart"></canvas>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div class="chart-wrapper">
-                        <canvas id="subjectChart"></canvas>
+                    <!-- Chart 2: Radar Chart -->
+                    <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
+                       <div class="mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title">
+                                <h2 class="mdl-card__title-text">成绩雷达分析</h2>
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                <canvas id="radar-chart"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </section>
-        </div>
-        
-        <!-- 底部导航 -->
-        <nav class="bottom-nav">
-            <a href="#" class="nav-item active">
-                <i class="fas fa-home nav-icon"></i>
-                <span>首页</span>
-            </a>
-            <a href="#" class="nav-item">
-                <i class="fas fa-chart-line nav-icon"></i>
-                <span>分析</span>
-            </a>
-            <a href="#" class="nav-item">
-                <i class="fas fa-history nav-icon"></i>
-                <span>历史</span>
-            </a>
-            <a href="#" class="nav-item">
-                <i class="fas fa-user nav-icon"></i>
-                <span>我的</span>
-            </a>
-        </nav>
+
+                <!-- Historical Trend Chart -->
+                <div id="trends-container" style="display: none;">
+                    <h2 class="section-title">历史分数走向</h2>
+                    <div class="mdl-card mdl-shadow--2dp">
+                        <div class="mdl-card__supporting-text">
+                            <div id="trend-filters">
+                                <button class="mdl-button mdl-js-button mdl-js-ripple-effect trend-filter-btn active" data-filter="all">全部</button>
+                                <button class="mdl-button mdl-js-button mdl-js-ripple-effect trend-filter-btn" data-filter="main">主科</button>
+                                <button class="mdl-button mdl-js-button mdl-js-ripple-effect trend-filter-btn" data-filter="science">理科</button>
+                                <button class="mdl-button mdl-js-button mdl-js-ripple-effect trend-filter-btn" data-filter="liberal">文科</button>
+                            </div>
+                            <canvas id="trend-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
-    
-    <script src="js/data.js"></script>
-    <script src="js/chart.js"></script>
-    <script src="js/app.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
