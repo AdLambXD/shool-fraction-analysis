@@ -10,9 +10,15 @@
 - [x] 绘制饼图 柱状图
 - [ ] 对比历史数据
 - [ ] 简单添加成绩数据
+## 计划
+- [x] apk 打包 （感谢steve3184）
+
 ## 结构目录
 ```
 main/
+ ├── Android/ //Android项目
+     └── app/
+         └── src/....
  ├── index.html
  ├── css/
  │   ├── style.css //主样式
